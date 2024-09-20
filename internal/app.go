@@ -15,6 +15,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/genefriendway/onchain-handler/conf"
+	"github.com/genefriendway/onchain-handler/conf/database"
 	"github.com/genefriendway/onchain-handler/internal/middleware"
 	routeV1 "github.com/genefriendway/onchain-handler/internal/route"
 	"github.com/genefriendway/onchain-handler/internal/util/log"
@@ -41,7 +42,7 @@ func RunApp(config *conf.Configuration) {
 	r := gin.New()
 	r.Use(pagination.Default())
 
-	db := conf.DBConnWithLoglevel(logger.Info)
+	db := database.DBConnWithLoglevel(logger.Info)
 
 	// SECTION: Register middlewares
 	// r.Use(middleware.StructuredLogger())
