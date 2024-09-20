@@ -8,7 +8,6 @@ import (
 
 	"gorm.io/gorm/logger"
 
-	pagination "github.com/AstraProtocol/reward-libs/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	swaggerFiles "github.com/swaggo/files"
@@ -40,7 +39,7 @@ func RunApp(config *conf.Configuration) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
-	r.Use(pagination.Default())
+	r.Use(middleware.DefaultPagination())
 
 	db := database.DBConnWithLoglevel(logger.Info)
 
