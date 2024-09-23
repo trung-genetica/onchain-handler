@@ -17,7 +17,7 @@ import (
 	"github.com/genefriendway/onchain-handler/conf/database"
 	"github.com/genefriendway/onchain-handler/internal/middleware"
 	routeV1 "github.com/genefriendway/onchain-handler/internal/route"
-	"github.com/genefriendway/onchain-handler/internal/util/log"
+	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
 // @title           onchain-handler API

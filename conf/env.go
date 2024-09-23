@@ -21,12 +21,20 @@ type DatabaseConfiguration struct {
 	DbName     string `mapstructure:"DB_NAME"`
 }
 
+type BlockchainConfiguration struct {
+	RpcUrl           string `mapstructure:"RPC_URL"`
+	ChainID          uint32 `mapstructure:"CHAIN_ID"`
+	PrivateKeyReward string `mapstructure:"PRIVATE_KEY_REWARD"`
+	RewardAddress    string `mapstructure:"REWARD_ADDRESS"`
+}
+
 type Configuration struct {
-	Database DatabaseConfiguration `mapstructure:",squash"`
-	Redis    RedisConfiguration    `mapstructure:",squash"`
-	AppName  string                `mapstructure:"APP_NAME"`
-	AppPort  uint32                `mapstructure:"APP_PORT"`
-	Env      string                `mapstructure:"ENV"`
+	Database   DatabaseConfiguration   `mapstructure:",squash"`
+	Redis      RedisConfiguration      `mapstructure:",squash"`
+	Blockchain BlockchainConfiguration `mapstructure:",squash"`
+	AppName    string                  `mapstructure:"APP_NAME"`
+	AppPort    uint32                  `mapstructure:"APP_PORT"`
+	Env        string                  `mapstructure:"ENV"`
 }
 
 var configuration Configuration
