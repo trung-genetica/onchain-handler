@@ -76,7 +76,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token_amount": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },

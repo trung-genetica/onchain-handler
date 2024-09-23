@@ -4,7 +4,7 @@ definitions:
       recipient_address:
         type: string
       token_amount:
-        type: integer
+        type: string
     type: object
   util.GeneralError:
     properties:

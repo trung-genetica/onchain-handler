@@ -20,8 +20,9 @@ type RewardHandler struct {
 	Config    *conf.Configuration
 }
 
+// NewRewardHandler initializes the RewardHandler
 func NewRewardHandler(ucase interfaces.RewardUCase, config *conf.Configuration) *RewardHandler {
-	// Initialize the eth client
+	// Connect to eth client
 	client, err := ethclient.Dial(config.Blockchain.RpcUrl)
 	if err != nil {
 		log.LG.Fatalf("failed to connect to eth client: %v", err)
@@ -35,7 +36,7 @@ func NewRewardHandler(ucase interfaces.RewardUCase, config *conf.Configuration) 
 	}
 }
 
-// Reward Distribute reward tokens
+// Reward handles the distribution of reward tokens
 // @Summary Reward
 // @Description Reward
 // @Tags 	reward
@@ -47,13 +48,11 @@ func NewRewardHandler(ucase interfaces.RewardUCase, config *conf.Configuration) 
 // @Failure 417 		{object}	util.GeneralError
 // @Router 	/api/v1/rewards [post]
 func (h *RewardHandler) Reward(ctx *gin.Context) {
-	// Parse the incoming JSON request
+	// Parse the request body
 	var req []dto.CreateRewardPayload
 	if err := ctx.BindJSON(&req); err != nil {
 		log.LG.Errorf("Failed to parse reward payload: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid payload",
-		})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid payload"})
 		return
 	}
 
@@ -61,59 +60,80 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 	recipients, err := convertToRecipients(req)
 	if err != nil {
 		log.LG.Errorf("Failed to convert recipients: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to process reward recipients",
-		})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Distribute the rewards using the bulk transfer function
+	// Perform the reward distribution
 	txHash, err := DistributeReward(h.ETHClient, h.Config, recipients)
 	if err != nil {
 		log.LG.Errorf("Failed to distribute rewards: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Reward distribution failed",
-		})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Reward distribution failed"})
 		return
 	}
 
-	// Prepare reward history data
-	var rewards []dto.Reward
-	rewardAddress := h.Config.Blockchain.RewardAddress
-	for _, payload := range req {
-		reward := dto.Reward{
-			RecipientAddress: payload.RecipientAddress,
-			RewardAddress:    rewardAddress,
-			TokenAmount:      payload.TokenAmount,
-			TransactionHash:  *txHash,
-		}
-		rewards = append(rewards, reward)
+	// Prepare the rewards history
+	rewards, err := h.prepareRewardHistory(req, *txHash)
+	if err != nil {
+		log.LG.Errorf("Error preparing reward history: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
-	// Save the rewards history in the database
+	// Save the rewards history to the database
 	if err := h.UCase.CreateRewardsHistory(ctx, rewards); err != nil {
 		log.LG.Errorf("Failed to save rewards history: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to save rewards history",
-		})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save rewards history"})
 		return
 	}
 
-	// Return success response
-	ctx.JSON(http.StatusOK, gin.H{
-		"success": true,
-	})
+	// Return a success response
+	ctx.JSON(http.StatusOK, gin.H{"success": true})
 }
 
 // Helper to convert CreateRewardPayload to recipients map
 func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, error) {
 	recipients := make(map[string]*big.Int)
+
 	for _, payload := range req {
-		amount := new(big.Int).SetUint64(payload.TokenAmount)
-		if _, ok := recipients[payload.RecipientAddress]; ok {
+		// Check for duplicate recipient addresses
+		if _, exists := recipients[payload.RecipientAddress]; exists {
 			return nil, fmt.Errorf("duplicate recipient address: %s", payload.RecipientAddress)
 		}
-		recipients[payload.RecipientAddress] = amount
+
+		// Convert token amount to big.Int
+		tokenAmount := new(big.Int)
+		if _, success := tokenAmount.SetString(payload.TokenAmount, 10); !success {
+			return nil, fmt.Errorf("invalid token amount: %s", payload.TokenAmount)
+		}
+
+		recipients[payload.RecipientAddress] = tokenAmount
 	}
+
 	return recipients, nil
+}
+
+// prepareRewardHistory creates a slice of Reward structs from the request payload
+func (h *RewardHandler) prepareRewardHistory(req []dto.CreateRewardPayload, txHash string) ([]dto.Reward, error) {
+	rewardAddress := h.Config.Blockchain.RewardAddress
+	var rewards []dto.Reward
+
+	for _, payload := range req {
+		// Convert the token amount from string to *big.Int
+		tokenAmount := new(big.Int)
+		if _, success := tokenAmount.SetString(payload.TokenAmount, 10); !success {
+			return nil, fmt.Errorf("invalid token amount: %s", payload.TokenAmount)
+		}
+
+		// Create the Reward object
+		reward := dto.Reward{
+			RecipientAddress: payload.RecipientAddress,
+			RewardAddress:    rewardAddress,
+			TokenAmount:      tokenAmount,
+			TransactionHash:  txHash,
+		}
+		rewards = append(rewards, reward)
+	}
+
+	return rewards, nil
 }
