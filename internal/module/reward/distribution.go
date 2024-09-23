@@ -12,8 +12,8 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-// DistributeReward distributes reward tokens from the reward address to user wallets
-func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int) ([]string, error) {
+// DistributeReward distributes reward tokens from the reward address to user wallets using bulk transfer
+func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int) (*string, error) {
 	// Load Blockchain configuration
 	rpcUrl := config.Blockchain.RpcUrl
 	chainID := config.Blockchain.ChainID
@@ -44,30 +44,27 @@ func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int
 		return nil, fmt.Errorf("failed to instantiate ERC20 contract: %w", err)
 	}
 
-	// Keep track of failed transfers
-	var failedRecipients []string
-
-	// Distribute tokens to each recipient
+	// Prepare recipient addresses and values for bulk transfer
+	var recipientAddresses []common.Address
+	var tokenAmounts []*big.Int
 	for recipientAddress, amount := range recipients {
-		log.LG.Infof("Transferring %s tokens to %s...\n", amount.String(), recipientAddress)
-
-		recipient := common.HexToAddress(recipientAddress)
-		tx, err := LPToken.Transfer(auth, recipient, amount)
-		if err != nil {
-			// Log failure and add to the list of failed recipients
-			log.LG.Infof("Failed to transfer tokens to %s: %v", recipientAddress, err)
-			failedRecipients = append(failedRecipients, recipientAddress)
-			continue
-		}
-
-		// Log the transaction hash for tracking
-		log.LG.Infof("Tokens transferred to %s. Tx hash: %s\n", recipientAddress, tx.Hash().Hex())
+		recipientAddresses = append(recipientAddresses, common.HexToAddress(recipientAddress))
+		tokenAmounts = append(tokenAmounts, amount)
 	}
 
-	// Return the list of failed transfers (if any)
-	if len(failedRecipients) > 0 {
-		return failedRecipients, fmt.Errorf("some transfers failed")
+	// Call the bulkTransfer function in the Solidity contract
+	tx, err := LPToken.BulkTransfer(auth, recipientAddresses, tokenAmounts)
+	if err != nil {
+		log.LG.Errorf("Failed to execute bulk transfer: %v", err)
+		return nil, err
 	}
 
-	return nil, nil // Return nil if all transfers were successful
+	// Get the transaction hash after a successful transfer
+	txHash := tx.Hash().Hex()
+
+	// Log the transaction hash for tracking
+	log.LG.Infof("Bulk transfer executed. Tx hash: %s\n", txHash)
+
+	// Return success with the transaction hash
+	return &txHash, nil
 }
