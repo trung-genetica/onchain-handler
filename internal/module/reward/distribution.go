@@ -25,6 +25,7 @@ func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to network: %w", err)
 	}
+	defer client.Close()
 
 	// Get authentication for signing transactions
 	privateKeyECDSA, err := util.PrivateKeyFromHex(privateKey)
