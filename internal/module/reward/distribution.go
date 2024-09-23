@@ -2,7 +2,6 @@ package reward
 
 import (
 	"fmt"
-	"log"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -10,6 +9,7 @@ import (
 	"github.com/genefriendway/onchain-handler/conf"
 	"github.com/genefriendway/onchain-handler/contracts/lptoken"
 	util "github.com/genefriendway/onchain-handler/internal/utils/ethereum"
+	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
 // DistributeReward distributes reward LifePoint tokens from the reward address to user wallets
@@ -46,17 +46,17 @@ func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int
 
 	// Distribute tokens to each recipient
 	for recipientAddress, amount := range recipients {
-		fmt.Printf("Transferring %s tokens to %s...\n", amount.String(), recipientAddress)
+		log.LG.Infof("Transferring %s tokens to %s...\n", amount.String(), recipientAddress)
 
 		recipient := common.HexToAddress(recipientAddress)
 		tx, err := LPToken.Transfer(auth, recipient, amount)
 		if err != nil {
-			log.Printf("Failed to transfer tokens to %s: %v", recipientAddress, err)
+			log.LG.Infof("Failed to transfer tokens to %s: %v", recipientAddress, err)
 			continue
 		}
 
 		// Log the transaction hash for tracking
-		fmt.Printf("Tokens transferred to %s. Tx hash: %s\n", recipientAddress, tx.Hash().Hex())
+		log.LG.Infof("Tokens transferred to %s. Tx hash: %s\n", recipientAddress, tx.Hash().Hex())
 	}
 	return nil
 }
