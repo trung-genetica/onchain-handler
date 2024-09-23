@@ -14,7 +14,93 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/api/v1/rewards": {
+            "post": {
+                "description": "Reward",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reward"
+                ],
+                "summary": "Reward",
+                "parameters": [
+                    {
+                        "description": "Request reward tokens, required",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CreateRewardPayload"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "When success, return {\"success\": true}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CreateRewardPayload"
+                            }
+                        }
+                    },
+                    "417": {
+                        "description": "Expectation Failed",
+                        "schema": {
+                            "$ref": "#/definitions/util.GeneralError"
+                        }
+                    },
+                    "424": {
+                        "description": "Failed Dependency",
+                        "schema": {
+                            "$ref": "#/definitions/util.GeneralError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.CreateRewardPayload": {
+            "type": "object",
+            "properties": {
+                "recipient_address": {
+                    "type": "string"
+                },
+                "token_amount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "util.GeneralError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "HTTP error code, or custom error code",
+                    "type": "integer"
+                },
+                "errors": {
+                    "description": "List of error send server 2 server",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "string": {
+                    "description": "Friendly error message",
+                    "type": "string"
+                }
+            }
+        }
+    }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it

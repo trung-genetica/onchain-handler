@@ -5,7 +5,6 @@ CREATE TABLE reward (
     transaction_hash VARCHAR(66) NOT NULL,
     token_amount NUMERIC(30, 0) NOT NULL,  
     status SMALLINT NOT NULL DEFAULT 0,    -- 0 for pending, 1 for success, -1 for failed 
-    executed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,   -- When the reward was executed
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

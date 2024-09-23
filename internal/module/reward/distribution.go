@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/genefriendway/onchain-handler/conf"
 	"github.com/genefriendway/onchain-handler/contracts/lptoken"
@@ -13,19 +14,11 @@ import (
 )
 
 // DistributeReward distributes reward tokens from the reward address to user wallets using bulk transfer
-func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int) (*string, error) {
+func DistributeReward(client *ethclient.Client, config *conf.Configuration, recipients map[string]*big.Int) (*string, error) {
 	// Load Blockchain configuration
-	rpcUrl := config.Blockchain.RpcUrl
 	chainID := config.Blockchain.ChainID
 	privateKey := config.Blockchain.PrivateKeyReward
 	rewardAddress := config.Blockchain.RewardAddress
-
-	// Connect to the blockchain network
-	client, err := util.ConnectToNetwork(rpcUrl)
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to network: %w", err)
-	}
-	defer client.Close()
 
 	// Get authentication for signing transactions
 	privateKeyECDSA, err := util.PrivateKeyFromHex(privateKey)
