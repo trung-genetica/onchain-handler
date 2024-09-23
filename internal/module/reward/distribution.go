@@ -12,8 +12,8 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-// DistributeReward distributes reward LifePoint tokens from the reward address to user wallets
-func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int) error {
+// DistributeReward distributes reward tokens from the reward address to user wallets
+func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int) ([]string, error) {
 	// Load Blockchain configuration
 	rpcUrl := config.Blockchain.RpcUrl
 	chainID := config.Blockchain.ChainID
@@ -23,26 +23,29 @@ func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int
 	// Connect to the blockchain network
 	client, err := util.ConnectToNetwork(rpcUrl)
 	if err != nil {
-		return fmt.Errorf("failed to connect to network: %w", err)
+		return nil, fmt.Errorf("failed to connect to network: %w", err)
 	}
 
 	// Get authentication for signing transactions
 	privateKeyECDSA, err := util.PrivateKeyFromHex(privateKey)
 	if err != nil {
-		return fmt.Errorf("failed to get private key: %w", err)
+		return nil, fmt.Errorf("failed to get private key: %w", err)
 	}
 
 	auth, err := util.GetAuth(client, privateKeyECDSA, new(big.Int).SetUint64(uint64(chainID)))
 	if err != nil {
-		return fmt.Errorf("failed to get auth: %w", err)
+		return nil, fmt.Errorf("failed to get auth: %w", err)
 	}
 
 	// Set up the reward token contract instance
 	tokenAddress := common.HexToAddress(rewardAddress)
 	LPToken, err := lptoken.NewLptoken(tokenAddress, client)
 	if err != nil {
-		return fmt.Errorf("failed to instantiate ERC20 contract: %w", err)
+		return nil, fmt.Errorf("failed to instantiate ERC20 contract: %w", err)
 	}
+
+	// Keep track of failed transfers
+	var failedRecipients []string
 
 	// Distribute tokens to each recipient
 	for recipientAddress, amount := range recipients {
@@ -51,12 +54,20 @@ func DistributeReward(config *conf.Configuration, recipients map[string]*big.Int
 		recipient := common.HexToAddress(recipientAddress)
 		tx, err := LPToken.Transfer(auth, recipient, amount)
 		if err != nil {
+			// Log failure and add to the list of failed recipients
 			log.LG.Infof("Failed to transfer tokens to %s: %v", recipientAddress, err)
+			failedRecipients = append(failedRecipients, recipientAddress)
 			continue
 		}
 
 		// Log the transaction hash for tracking
 		log.LG.Infof("Tokens transferred to %s. Tx hash: %s\n", recipientAddress, tx.Hash().Hex())
 	}
-	return nil
+
+	// Return the list of failed transfers (if any)
+	if len(failedRecipients) > 0 {
+		return failedRecipients, fmt.Errorf("some transfers failed")
+	}
+
+	return nil, nil // Return nil if all transfers were successful
 }
