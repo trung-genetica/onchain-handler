@@ -20,18 +20,19 @@ type RewardHandler struct {
 	Config    *conf.Configuration
 }
 
-func NewRewardHandler(ucase interfaces.RewardUCase, config *conf.Configuration) (*RewardHandler, error) {
+func NewRewardHandler(ucase interfaces.RewardUCase, config *conf.Configuration) *RewardHandler {
 	// Initialize the eth client
 	client, err := ethclient.Dial(config.Blockchain.RpcUrl)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to eth client: %w", err)
+		log.LG.Fatalf("failed to connect to eth client: %v", err)
+		return nil
 	}
 
 	return &RewardHandler{
 		UCase:     ucase,
 		ETHClient: client,
 		Config:    config,
-	}, nil
+	}
 }
 
 // Reward Distribute reward tokens
@@ -115,11 +116,4 @@ func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, er
 		recipients[payload.RecipientAddress] = amount
 	}
 	return recipients, nil
-}
-
-// CloseClient allows closing the client when it's no longer needed
-func (h *RewardHandler) CloseClient() {
-	if h.ETHClient != nil {
-		h.ETHClient.Close()
-	}
 }
