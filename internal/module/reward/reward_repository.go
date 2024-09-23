@@ -2,6 +2,7 @@ package reward
 
 import (
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 
@@ -20,6 +21,10 @@ func NewRewardRepository(db *gorm.DB) interfaces.RewardRepository {
 }
 
 func (r rewardRepository) CreateRewardsHistory(ctx context.Context, models []model.Reward) error {
-	// TODO: implement here
+	// Use GORM to perform a bulk insert
+	err := r.db.WithContext(ctx).Create(&models).Error
+	if err != nil {
+		return fmt.Errorf("failed to create rewards history: %w", err)
+	}
 	return nil
 }
