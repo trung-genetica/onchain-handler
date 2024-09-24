@@ -9,10 +9,10 @@ import (
 type MembershipEvents struct {
 	ID              uint64    `json:"id" gorm:"primaryKey"`
 	UserAddress     string    `json:"user_address" gorm:"column:user_address"`
-	OrderID         int64     `json:"order_id" gorm:"column:order_id"`
+	OrderID         uint64    `json:"order_id" gorm:"column:order_id"`
 	TransactionHash string    `json:"transaction_hash" gorm:"column:transaction_hash"`
 	Amount          string    `json:"amount" gorm:"column:amount"`
-	Status          int16     `json:"status" gorm:"column:status"`
+	Status          uint8     `json:"status" gorm:"column:status"`
 	CreatedAt       time.Time `json:"created_at" gorm:"column:created_at"`
 	UpdatedAt       time.Time `json:"updated_at" gorm:"column:updated_at"`
 	EndDuration     time.Time `json:"end_duration" gorm:"column:end_duration"`

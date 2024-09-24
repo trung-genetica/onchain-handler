@@ -19,7 +19,7 @@ func NewMembershipPurchaseRepository(db *gorm.DB) interfaces.MembershipPurchaseR
 	}
 }
 
-func (r membershipPurchaseRepository) CreateMembershipEventsHistory(ctx context.Context, models []model.Reward) error {
+func (r membershipPurchaseRepository) CreateMembershipEventHistory(ctx context.Context, model model.MembershipEvents) error {
 	// TODO: implement here
 	return nil
 }

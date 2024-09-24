@@ -5,9 +5,9 @@ import "time"
 type MembershipEventsDTO struct {
 	ID              uint64    `json:"id"`
 	UserAddress     string    `json:"user_address"`
-	OrderID         int64     `json:"order_id"`
+	OrderID         uint64    `json:"order_id"`
 	TransactionHash string    `json:"transaction_hash"`
 	Amount          string    `json:"amount"`
-	Status          int16     `json:"status"`
+	Status          uint8     `json:"status"`
 	EndDuration     time.Time `json:"end_duration"`
 }
