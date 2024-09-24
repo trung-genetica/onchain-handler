@@ -17,47 +17,62 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-// MembershipEventData represents the event data for a MembershipPurchased event
+// MembershipEventData represents the event data for a MembershipPurchased event.
 type MembershipEventData struct {
 	User     common.Address
 	Amount   *big.Int
 	OrderID  uint64
 	TxHash   string
-	Duration uint
+	Duration uint // Duration as an integer representing the type (0 for 1 year, 1 for 3 years)
 }
 
-// MembershipEventListener listens for the MembershipPurchased event and sends the event data to a channel
+// MembershipEventListener listens for MembershipPurchased events and processes them.
 type MembershipEventListener struct {
-	ETHClient        *ethclient.Client
-	ContractAddrress string
-	EventChan        chan MembershipEventData
-	Repo             interfaces.MembershipRepository
+	ETHClient       *ethclient.Client
+	ContractAddress common.Address // Changed to common.Address for better type safety
+	EventChan       chan MembershipEventData
+	Repo            interfaces.MembershipRepository
+	ParsedABI       abi.ABI // Pre-loaded ABI for efficiency
 }
 
+// NewMembershipEventListener initializes the listener and preloads the ABI.
 func NewMembershipEventListener(
 	client *ethclient.Client,
 	contractAddr string,
 	repo interfaces.MembershipRepository,
-) MembershipEventListener {
-	// Initialize the event channel with a buffer of 25
+) (MembershipEventListener, error) {
+	// Load the ABI once during initialization.
+	abiFilePath, err := filepath.Abs("./contracts/abis/MembershipPurchase.abi.json")
+	if err != nil {
+		return MembershipEventListener{}, fmt.Errorf("failed to get ABI file path: %w", err)
+	}
+
+	parsedABI, err := loadABI(abiFilePath)
+	if err != nil {
+		return MembershipEventListener{}, fmt.Errorf("failed to load ABI: %w", err)
+	}
+
+	// Initialize the event channel with a buffer of 25.
 	eventChan := make(chan MembershipEventData, 25)
 
 	return MembershipEventListener{
-		ETHClient:        client,
-		ContractAddrress: contractAddr,
-		EventChan:        eventChan, // Channel is initialized here
-		Repo:             repo,
-	}
+		ETHClient:       client,
+		ContractAddress: common.HexToAddress(contractAddr), // Convert string to common.Address
+		EventChan:       eventChan,
+		Repo:            repo,
+		ParsedABI:       parsedABI, // Preloaded ABI
+	}, nil
 }
 
-func (listener MembershipEventListener) RunListener(ctx context.Context) {
-	// Start listening for events
+// RunListener starts the listener and processes incoming events.
+func (listener MembershipEventListener) RunListener() {
+	// Start listening for events.
 	go listener.listen()
 
-	// Handle incoming events from the channel
+	// Handle incoming events from the channel.
 	go func() {
 		for event := range listener.EventChan {
-			// Convert the event to model.MembershipEvents
+			// Map the duration to days.
 			var durationDays int
 			switch event.Duration {
 			case 0:
@@ -66,23 +81,23 @@ func (listener MembershipEventListener) RunListener(ctx context.Context) {
 				durationDays = 1095
 			default:
 				log.LG.Errorf("Unexpected duration: %d", event.Duration)
-				continue // Skip this event or handle it as needed
+				continue // Skip this event or handle it as needed.
 			}
 
-			// Calculate end date based on the duration
+			// Calculate the end duration based on the duration in days.
 			endDuration := time.Now().AddDate(0, 0, durationDays)
 
-			// Create the MembershipEvents model
+			// Create the MembershipEvents model.
 			membershipEvent := model.MembershipEvents{
 				UserAddress:     event.User.Hex(),
 				OrderID:         event.OrderID,
 				TransactionHash: event.TxHash,
 				Amount:          event.Amount.String(),
-				Status:          1,
+				Status:          1, // Assuming 1 means active or successful
 				EndDuration:     endDuration,
 			}
 
-			// Save the event to the repository
+			// Save the event to the repository.
 			if err := listener.Repo.CreateMembershipEventHistory(context.Background(), membershipEvent); err != nil {
 				log.LG.Errorf("Error saving event to database: %v", err)
 			} else {
@@ -91,55 +106,37 @@ func (listener MembershipEventListener) RunListener(ctx context.Context) {
 		}
 	}()
 
-	// Keep the listener running until the context is canceled
-	<-ctx.Done()
-	log.LG.Info("Event listener stopped.")
+	select {}
 }
 
+// listen polls the blockchain for logs and parses them.
 func (listener MembershipEventListener) listen() {
 	log.LG.Info("Starting event listener for MembershipPurchased...")
 
-	abiFilePath, err := filepath.Abs("./contracts/abis/MembershipPurchase.abi.json")
+	// Define how far back to start polling.
+	blockOffset := int64(10)
+
+	// Poll for logs using the passed context instead of creating a new one.
+	logs, err := pollForLogs(listener.ETHClient, listener.ContractAddress, blockOffset)
 	if err != nil {
-		log.LG.Errorf("Failed to get absolute path for ABI file: %v", err)
+		log.LG.Errorf("Failed to poll logs from contract %s: %v", listener.ContractAddress.Hex(), err)
 		return
 	}
 
-	// Load the ABI from the hardcoded file path
-	parsedABI, err := loadABI(abiFilePath)
-	if err != nil {
-		log.LG.Errorf("Failed to load ABI: %v", err)
-		return
-	}
-
-	// Subscribe to filter logs
-	logs, sub, err := subscribeToLogs(listener.ETHClient, common.HexToAddress(listener.ContractAddrress))
-	if err != nil {
-		log.LG.Errorf("Failed to subscribe to logs: %v", err)
-		return
-	}
-
-	// Listen for logs and handle them
-	for {
-		select {
-		case err := <-sub.Err():
-			log.LG.Errorf("Subscription error: %v", err)
-			return
-
-		case vLog := <-logs:
-			eventData, err := listener.parseEventLog(vLog, parsedABI)
-			if err != nil {
-				log.LG.Errorf("Failed to unpack log: %v", err)
-				continue
-			}
-
-			// Send the event data to the event channel
-			listener.EventChan <- eventData
+	// Process each log entry.
+	for _, vLog := range logs {
+		eventData, err := listener.parseEventLog(vLog, listener.ParsedABI)
+		if err != nil {
+			log.LG.Errorf("Failed to parse log for TxHash %s: %v", vLog.TxHash.Hex(), err)
+			continue
 		}
+
+		// Send the parsed event data to the event channel.
+		listener.EventChan <- eventData
 	}
 }
 
-// parseEventLog unpacks the log data into the MembershipEventData structure
+// parseEventLog unpacks the log data into the MembershipEventData structure.
 func (listener MembershipEventListener) parseEventLog(
 	vLog types.Log,
 	parsedABI abi.ABI,
@@ -148,25 +145,25 @@ func (listener MembershipEventListener) parseEventLog(
 		User     common.Address
 		Amount   *big.Int
 		OrderID  uint64
-		Duration uint
+		Duration uint // Duration passed as part of the event
 	}{}
 
-	// Unpack the log data into the event structure
+	// Unpack the log data into the event structure.
 	err := parsedABI.UnpackIntoInterface(&event, "MembershipPurchased", vLog.Data)
 	if err != nil {
-		return MembershipEventData{}, fmt.Errorf("failed to unpack log: %w", err)
+		return MembershipEventData{}, fmt.Errorf("failed to unpack log for TxHash %s: %w", vLog.TxHash.Hex(), err)
 	}
 
-	// Extract indexed fields (user address and order ID)
+	// Extract indexed fields (user address and order ID).
 	event.User = common.HexToAddress(vLog.Topics[1].Hex())
 
-	// Parse the OrderID from hex to uint64
+	// Parse the OrderID from hex to uint64.
 	orderID, err := parseHexToUint64(vLog.Topics[2].Hex())
 	if err != nil {
-		return MembershipEventData{}, fmt.Errorf("failed to parse order ID: %w", err)
+		return MembershipEventData{}, fmt.Errorf("failed to parse order ID for TxHash %s: %w", vLog.TxHash.Hex(), err)
 	}
 
-	// Prepare event data, including the parsed duration
+	// Prepare event data, including the parsed duration.
 	eventData := MembershipEventData{
 		User:     event.User,
 		Amount:   event.Amount,
