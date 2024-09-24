@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-gonic/gin"
 
+	"github.com/genefriendway/onchain-handler/blockchain"
 	"github.com/genefriendway/onchain-handler/conf"
 	"github.com/genefriendway/onchain-handler/internal/dto"
 	"github.com/genefriendway/onchain-handler/internal/interfaces"
@@ -65,7 +66,7 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 	}
 
 	// Perform the reward distribution
-	txHash, err := DistributeReward(h.ETHClient, h.Config, recipients)
+	txHash, err := blockchain.DistributeReward(h.ETHClient, h.Config, recipients)
 	if err != nil {
 		log.LG.Errorf("Failed to distribute rewards: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Reward distribution failed"})

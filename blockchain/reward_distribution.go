@@ -1,4 +1,4 @@
-package reward
+package blockchain
 
 import (
 	"fmt"
