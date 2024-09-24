@@ -34,12 +34,13 @@ func loadABI(path string) (abi.ABI, error) {
 
 // pollForLogs polls logs for the contract from a given block offset
 func pollForLogs(
+	ctx context.Context,
 	client *ethclient.Client, // Ethereum client
 	contractAddr common.Address, // Contract address to filter logs
 	blockOffset int64, // How many blocks in the past to start querying
 ) ([]types.Log, error) {
 	// Get the latest block number
-	latestBlock, err := getLatestBlockNumber(client)
+	latestBlock, err := getLatestBlockNumber(ctx, client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve latest block number: %w", err)
 	}
@@ -54,7 +55,7 @@ func pollForLogs(
 	}
 
 	// Poll for logs
-	logs, err := client.FilterLogs(context.Background(), query)
+	logs, err := client.FilterLogs(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve contract logs: %w", err)
 	}
@@ -63,8 +64,8 @@ func pollForLogs(
 }
 
 // getLatestBlockNumber retrieves the latest block number from the Ethereum client
-func getLatestBlockNumber(client *ethclient.Client) (*big.Int, error) {
-	header, err := client.HeaderByNumber(context.Background(), nil)
+func getLatestBlockNumber(ctx context.Context, client *ethclient.Client) (*big.Int, error) {
+	header, err := client.HeaderByNumber(ctx, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch the latest block header: %w", err)
 	}

@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -21,33 +22,21 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-// @title           onchain-handler API
-// @version         1.0
-// @description     This Swagger docs for onchain-handler.
-// @termsOfService  http://swagger.io/terms/
-// @contact.name    API Support
-// @contact.url     http://www.swagger.io/support
-// @contact.email   support@swagger.io
-// @license.name    Apache 2.0
-// @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
-
 func RunApp(config *conf.Configuration) {
 	// Set zerolog global level
-	// zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	log.LG = log.NewZerologLogger(os.Stdout, zerolog.InfoLevel)
 
+	// Use release mode in production
 	if config.Env == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	}
+
 	r := gin.New()
 	r.Use(middleware.DefaultPagination())
-
-	db := database.DBConnWithLoglevel(logger.Info)
-
-	// SECTION: Register middlewares
-	// r.Use(middleware.StructuredLogger())
 	r.Use(middleware.RequestLogger(log.LG.Instance))
 	r.Use(gin.Recovery())
+
+	db := database.DBConnWithLoglevel(logger.Info)
 
 	// SECTION: Init eth client
 	ethClient, err := ethclient.Dial(config.Blockchain.RpcUrl)
@@ -56,10 +45,13 @@ func RunApp(config *conf.Configuration) {
 	}
 	defer ethClient.Close()
 
-	// SECTION: Register routes
-	routeV1.RegisterRoutes(r, config, db, ethClient)
+	// Create a context to handle shutdown signals
+	ctx, cancel := context.WithCancel(context.Background())
 
-	// SECTION: Register general handlers
+	// SECTION: Register routes with context
+	routeV1.RegisterRoutes(r, config, db, ethClient, ctx)
+
+	// Register general handlers
 	r.GET("/healthcheck", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": fmt.Sprintf("%s is still alive", config.AppName),
@@ -68,13 +60,16 @@ func RunApp(config *conf.Configuration) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// SECTION: Run Gin router
-	err = r.Run(fmt.Sprintf("0.0.0.0:%v", config.AppPort))
-	if err != nil {
-		log.LG.Fatalf("failed to run gin router: %v", err)
-	}
+	go func() {
+		if err := r.Run(fmt.Sprintf("0.0.0.0:%v", config.AppPort)); err != nil {
+			log.LG.Fatalf("failed to run gin router: %v", err)
+		}
+	}()
 
-	// Wait until some signal is captured.
+	// Handle shutdown signals
 	sigC := make(chan os.Signal, 1)
 	signal.Notify(sigC, syscall.SIGTERM, syscall.SIGINT)
 	<-sigC
+	log.LG.Info("Shutting down gracefully...")
+	cancel() // Cancel the context to stop the event listener
 }

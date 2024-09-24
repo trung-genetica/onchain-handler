@@ -1,6 +1,8 @@
 package route
 
 import (
+	"context"
+
 	"gorm.io/gorm"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -10,9 +12,10 @@ import (
 	"github.com/genefriendway/onchain-handler/conf"
 	"github.com/genefriendway/onchain-handler/internal/module/membership"
 	"github.com/genefriendway/onchain-handler/internal/module/reward"
+	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethClient *ethclient.Client) {
+func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethClient *ethclient.Client, ctx context.Context) {
 	v1 := r.Group("/api/v1")
 	appRouter := v1.Group("")
 
@@ -32,7 +35,12 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 		membershipRepository,
 	)
 	if err != nil {
-		panic("Failed to initialize MembershipEventListener")
+		log.LG.Errorf("Failed to initialize MembershipEventListener: %v", err)
+		return
 	}
-	go membershipEventListener.RunListener()
+	go func() {
+		if err := membershipEventListener.RunListener(ctx); err != nil {
+			log.LG.Errorf("Error running MembershipEventListener: %v", err)
+		}
+	}()
 }
