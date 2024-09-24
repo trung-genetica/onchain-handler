@@ -10,6 +10,7 @@ import (
 
 	"github.com/genefriendway/onchain-handler/blockchain"
 	"github.com/genefriendway/onchain-handler/conf"
+	"github.com/genefriendway/onchain-handler/internal/constants"
 	"github.com/genefriendway/onchain-handler/internal/dto"
 	"github.com/genefriendway/onchain-handler/internal/interfaces"
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
@@ -92,7 +93,7 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": true})
 }
 
-// Helper to convert CreateRewardPayload to recipients map
+// ConvertToRecipients converts the CreateRewardPayload to a recipients map (address -> token amount in smallest unit)
 func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, error) {
 	recipients := make(map[string]*big.Int)
 
@@ -108,7 +109,10 @@ func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, er
 			return nil, fmt.Errorf("invalid token amount: %s", payload.TokenAmount)
 		}
 
-		recipients[payload.RecipientAddress] = tokenAmount
+		// Multiply by 10^18 to convert to the smallest unit of the token (like wei for ETH)
+		tokenAmountInSmallestUnit := new(big.Int).Mul(tokenAmount, new(big.Int).Exp(big.NewInt(10), big.NewInt(constants.LifePointDecimals), nil))
+
+		recipients[payload.RecipientAddress] = tokenAmountInSmallestUnit
 	}
 
 	return recipients, nil

@@ -26,6 +26,7 @@ type BlockchainConfiguration struct {
 	ChainID          uint32 `mapstructure:"CHAIN_ID"`
 	PrivateKeyReward string `mapstructure:"PRIVATE_KEY_REWARD"`
 	RewardAddress    string `mapstructure:"REWARD_ADDRESS"`
+	LifePointAddress string `mapstructure:"LIFE_POINT_ADDRESS"`
 }
 
 type Configuration struct {

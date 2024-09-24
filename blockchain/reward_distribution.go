@@ -18,7 +18,7 @@ func DistributeReward(client *ethclient.Client, config *conf.Configuration, reci
 	// Load Blockchain configuration
 	chainID := config.Blockchain.ChainID
 	privateKey := config.Blockchain.PrivateKeyReward
-	rewardAddress := config.Blockchain.RewardAddress
+	tokenAddress := config.Blockchain.LifePointAddress
 
 	// Get authentication for signing transactions
 	privateKeyECDSA, err := util.PrivateKeyFromHex(privateKey)
@@ -32,8 +32,7 @@ func DistributeReward(client *ethclient.Client, config *conf.Configuration, reci
 	}
 
 	// Set up the reward token contract instance
-	tokenAddress := common.HexToAddress(rewardAddress)
-	LPToken, err := lptoken.NewLptoken(tokenAddress, client)
+	LPToken, err := lptoken.NewLptoken(common.HexToAddress(tokenAddress), client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to instantiate ERC20 contract: %w", err)
 	}
