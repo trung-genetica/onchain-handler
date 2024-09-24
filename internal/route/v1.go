@@ -15,7 +15,7 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB) {
 
 	// SECTION: reward tokens
 	rewardRepository := reward.NewRewardRepository(db)
-	rewardUCase := reward.NewRewardUCase(rewardRepository)
-	rewardHandler := reward.NewRewardHandler(rewardUCase, config)
+	rewardUCase := reward.NewRewardUCase(rewardRepository, config)
+	rewardHandler := reward.NewRewardHandler(rewardUCase)
 	appRouter.POST("/rewards", rewardHandler.Reward)
 }
