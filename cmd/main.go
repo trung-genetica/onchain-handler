@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/genefriendway/onchain-handler/conf"
+	_ "github.com/genefriendway/onchain-handler/docs"
 	app "github.com/genefriendway/onchain-handler/internal"
 )
 
