@@ -27,8 +27,8 @@ func NewRewardHandler(ucase interfaces.RewardUCase) *RewardHandler {
 // @Tags 	reward
 // @Accept	json
 // @Produce json
-// @Param 	payload	body 			[]dto.CreateRewardPayload true "Request reward tokens, required"
-// @Success 200 		{object}	[]dto.CreateRewardPayload "When success, return {"success": true}"
+// @Param 	payload	body 			[]dto.CreateRewardPayloadDTO true "Request reward tokens, required"
+// @Success 200 		{object}	[]dto.CreateRewardPayloadDTO "When success, return {"success": true}"
 // @Failure 424 		{object}	util.GeneralError
 // @Failure 417 		{object}	util.GeneralError
 // @Router 	/api/v1/rewards [post]

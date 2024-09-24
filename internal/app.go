@@ -50,14 +50,14 @@ func RunApp(config *conf.Configuration) {
 	r.Use(gin.Recovery())
 
 	// SECTION: Init eth client
-	client, err := ethclient.Dial(config.Blockchain.RpcUrl)
+	ethClient, err := ethclient.Dial(config.Blockchain.RpcUrl)
 	if err != nil {
 		log.LG.Fatalf("failed to connect to eth client: %v", err)
 	}
-	defer client.Close()
+	defer ethClient.Close()
 
 	// SECTION: Register routes
-	routeV1.RegisterRoutes(r, config, db, client)
+	routeV1.RegisterRoutes(r, config, db, ethClient)
 
 	// SECTION: Register general handlers
 	r.GET("/healthcheck", func(c *gin.Context) {

@@ -37,7 +37,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.CreateRewardPayload"
+                                "$ref": "#/definitions/dto.CreateRewardPayloadDTO"
                             }
                         }
                     }
@@ -48,7 +48,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.CreateRewardPayload"
+                                "$ref": "#/definitions/dto.CreateRewardPayloadDTO"
                             }
                         }
                     },
@@ -69,7 +69,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.CreateRewardPayload": {
+        "dto.CreateRewardPayloadDTO": {
             "type": "object",
             "properties": {
                 "recipient_address": {

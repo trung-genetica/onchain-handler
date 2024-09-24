@@ -1,5 +1,5 @@
 definitions:
-  dto.CreateRewardPayload:
+  dto.CreateRewardPayloadDTO:
     properties:
       recipient_address:
         type: string
@@ -35,7 +35,7 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/dto.CreateRewardPayload'
+            $ref: '#/definitions/dto.CreateRewardPayloadDTO'
           type: array
       produces:
       - application/json
@@ -44,7 +44,7 @@ paths:
           description: 'When success, return {"success": true}'
           schema:
             items:
-              $ref: '#/definitions/dto.CreateRewardPayload'
+              $ref: '#/definitions/dto.CreateRewardPayloadDTO'
             type: array
         "417":
           description: Expectation Failed
