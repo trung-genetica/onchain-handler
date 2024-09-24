@@ -15,6 +15,7 @@ type Reward struct {
 	TransactionHash  string    `json:"transaction_hash"`
 	TokenAmount      string    `json:"token_amount"`
 	Status           int16     `json:"status"`
+	ErrorMessage     string    `json:"error_message"`
 	CreatedAt        time.Time `json:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at"`
 }
@@ -31,5 +32,6 @@ func (m *Reward) ToDto() dto.Reward {
 		TransactionHash:  m.TransactionHash,
 		TokenAmount:      m.TokenAmount,
 		Status:           m.Status,
+		ErrorMessage:     m.ErrorMessage,
 	}
 }

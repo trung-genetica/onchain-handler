@@ -59,7 +59,7 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 	}
 
 	// Convert the payload into the recipients map (address -> token amount)
-	recipients, err := convertToRecipients(req)
+	recipients, err := h.convertToRecipients(req)
 	if err != nil {
 		log.LG.Errorf("Failed to convert recipients: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -69,7 +69,26 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 	// Perform the reward distribution
 	txHash, err := blockchain.DistributeReward(h.ETHClient, h.Config, recipients)
 	if err != nil {
-		log.LG.Errorf("Failed to distribute rewards: %v", err)
+		// Create a slice to hold the reward history entries
+		var rewards []dto.Reward
+
+		// Iterate over each payload and create a reward history entry
+		for _, payload := range req {
+			reward := dto.Reward{
+				RewardAddress:    h.Config.Blockchain.RewardAddress,
+				RecipientAddress: payload.RecipientAddress,
+				TokenAmount:      payload.TokenAmount, // Make sure TokenAmount is converted correctly
+				Status:           -1,                  // Mark as failed
+				ErrorMessage:     err.Error(),
+			}
+			// Append the reward to the slice
+			rewards = append(rewards, reward)
+		}
+
+		// Save the failed rewards history to the database as a batch
+		if err := h.UCase.CreateRewardsHistory(ctx, rewards); err != nil {
+			log.LG.Errorf("Failed to save failed rewards history: %v", err)
+		}
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Reward distribution failed"})
 		return
 	}
@@ -94,7 +113,7 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 }
 
 // ConvertToRecipients converts the CreateRewardPayload to a recipients map (address -> token amount in smallest unit)
-func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, error) {
+func (h *RewardHandler) convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, error) {
 	recipients := make(map[string]*big.Int)
 
 	for _, payload := range req {
