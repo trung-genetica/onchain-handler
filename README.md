@@ -6,5 +6,5 @@ abigen --abi=./contracts/abis/LifePointToken.abi.json --pkg=lptoken --out=./cont
 ## Swagger
 http://localhost:8080/swagger/index.html
 ## How to run
-make build
-make run
+1. make build
+2. make run
