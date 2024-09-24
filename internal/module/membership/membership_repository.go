@@ -9,17 +9,17 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/model"
 )
 
-type membershipPurchaseRepository struct {
+type membershipRepository struct {
 	db *gorm.DB
 }
 
-func NewMembershipPurchaseRepository(db *gorm.DB) interfaces.MembershipPurchaseRepository {
-	return &membershipPurchaseRepository{
+func NewMembershipRepository(db *gorm.DB) interfaces.MembershipRepository {
+	return &membershipRepository{
 		db: db,
 	}
 }
 
-func (r membershipPurchaseRepository) CreateMembershipEventHistory(ctx context.Context, model model.MembershipEvents) error {
+func (r membershipRepository) CreateMembershipEventHistory(ctx context.Context, model model.MembershipEvents) error {
 	// TODO: implement here
 	return nil
 }

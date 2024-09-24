@@ -6,8 +6,8 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/model"
 )
 
-type MembershipPurchaseRepository interface {
+type MembershipRepository interface {
 	CreateMembershipEventHistory(ctx context.Context, model model.MembershipEvents) error
 }
 
-type MembershipPurchaseUCase interface{}
+type MembershipUCase interface{}

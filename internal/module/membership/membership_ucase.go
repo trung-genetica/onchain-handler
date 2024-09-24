@@ -4,12 +4,12 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/interfaces"
 )
 
-type membershipPurchaseUCase struct {
-	MembershipPurchaseRepository interfaces.MembershipPurchaseRepository
+type membershipUCase struct {
+	MembershipPurchaseRepository interfaces.MembershipRepository
 }
 
-func NewMembershipPurchaseUCase(membershipPurchaseRepository interfaces.MembershipPurchaseRepository) interfaces.MembershipPurchaseUCase {
-	return &membershipPurchaseUCase{
+func NewMembershipPurchaseUCase(membershipPurchaseRepository interfaces.MembershipRepository) interfaces.MembershipUCase {
+	return &membershipUCase{
 		MembershipPurchaseRepository: membershipPurchaseRepository,
 	}
 }

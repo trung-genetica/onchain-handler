@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/gorm/logger"
 
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	swaggerFiles "github.com/swaggo/files"
@@ -48,8 +49,15 @@ func RunApp(config *conf.Configuration) {
 	r.Use(middleware.RequestLogger(log.LG.Instance))
 	r.Use(gin.Recovery())
 
+	// SECTION: Init eth client
+	client, err := ethclient.Dial(config.Blockchain.RpcUrl)
+	if err != nil {
+		log.LG.Fatalf("failed to connect to eth client: %v", err)
+	}
+	defer client.Close()
+
 	// SECTION: Register routes
-	routeV1.RegisterRoutes(r, config, db)
+	routeV1.RegisterRoutes(r, config, db, client)
 
 	// SECTION: Register general handlers
 	r.GET("/healthcheck", func(c *gin.Context) {
@@ -60,7 +68,7 @@ func RunApp(config *conf.Configuration) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// SECTION: Run Gin router
-	err := r.Run(fmt.Sprintf("0.0.0.0:%v", config.AppPort))
+	err = r.Run(fmt.Sprintf("0.0.0.0:%v", config.AppPort))
 	if err != nil {
 		log.LG.Fatalf("failed to run gin router: %v", err)
 	}

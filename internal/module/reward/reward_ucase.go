@@ -13,7 +13,6 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/dto"
 	"github.com/genefriendway/onchain-handler/internal/interfaces"
 	"github.com/genefriendway/onchain-handler/internal/model"
-	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
 type rewardUCase struct {
@@ -23,16 +22,10 @@ type rewardUCase struct {
 }
 
 // NewRewardUCase initializes the reward use case
-func NewRewardUCase(rewardRepository interfaces.RewardRepository, config *conf.Configuration) interfaces.RewardUCase {
-	client, err := ethclient.Dial(config.Blockchain.RpcUrl)
-	if err != nil {
-		log.LG.Fatalf("failed to connect to eth client: %v", err)
-		return nil
-	}
-
+func NewRewardUCase(rewardRepository interfaces.RewardRepository, ethClient *ethclient.Client, config *conf.Configuration) interfaces.RewardUCase {
 	return &rewardUCase{
 		RewardRepository: rewardRepository,
-		ETHClient:        client,
+		ETHClient:        ethClient,
 		Config:           config,
 	}
 }

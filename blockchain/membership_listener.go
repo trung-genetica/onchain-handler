@@ -29,26 +29,28 @@ type MembershipEventData struct {
 // MembershipEventListener listens for the MembershipPurchased event and sends the event data to a channel
 type MembershipEventListener struct {
 	ETHClient        *ethclient.Client
-	ContractAddrress common.Address
+	ContractAddrress string
 	EventChan        chan MembershipEventData
-	Repo             interfaces.MembershipPurchaseRepository
+	Repo             interfaces.MembershipRepository
 }
 
 func NewMembershipEventListener(
 	client *ethclient.Client,
-	contractAddr common.Address,
-	eventChan chan MembershipEventData,
-	repo interfaces.MembershipPurchaseRepository,
+	contractAddr string,
+	repo interfaces.MembershipRepository,
 ) MembershipEventListener {
+	// Initialize the event channel with a buffer of 25
+	eventChan := make(chan MembershipEventData, 25)
+
 	return MembershipEventListener{
 		ETHClient:        client,
 		ContractAddrress: contractAddr,
-		EventChan:        eventChan,
+		EventChan:        eventChan, // Channel is initialized here
 		Repo:             repo,
 	}
 }
 
-func (listener MembershipEventListener) RunListener() {
+func (listener MembershipEventListener) RunListener(ctx context.Context) {
 	// Start listening for events
 	go listener.listen()
 
@@ -89,8 +91,9 @@ func (listener MembershipEventListener) RunListener() {
 		}
 	}()
 
-	// Keep the application running
-	select {}
+	// Keep the listener running until the context is canceled
+	<-ctx.Done()
+	log.LG.Info("Event listener stopped.")
 }
 
 func (listener MembershipEventListener) listen() {
@@ -110,7 +113,7 @@ func (listener MembershipEventListener) listen() {
 	}
 
 	// Subscribe to filter logs
-	logs, sub, err := subscribeToLogs(listener.ETHClient, listener.ContractAddrress)
+	logs, sub, err := subscribeToLogs(listener.ETHClient, common.HexToAddress(listener.ContractAddrress))
 	if err != nil {
 		log.LG.Errorf("Failed to subscribe to logs: %v", err)
 		return
@@ -142,8 +145,10 @@ func (listener MembershipEventListener) parseEventLog(
 	parsedABI abi.ABI,
 ) (MembershipEventData, error) {
 	event := struct {
-		User   common.Address
-		Amount *big.Int
+		User     common.Address
+		Amount   *big.Int
+		OrderID  uint64
+		Duration uint
 	}{}
 
 	// Unpack the log data into the event structure
@@ -161,12 +166,13 @@ func (listener MembershipEventListener) parseEventLog(
 		return MembershipEventData{}, fmt.Errorf("failed to parse order ID: %w", err)
 	}
 
-	// Prepare event data
+	// Prepare event data, including the parsed duration
 	eventData := MembershipEventData{
-		User:    event.User,
-		Amount:  event.Amount,
-		OrderID: orderID,
-		TxHash:  vLog.TxHash.Hex(),
+		User:     event.User,
+		Amount:   event.Amount,
+		OrderID:  orderID,
+		Duration: event.Duration,
+		TxHash:   vLog.TxHash.Hex(),
 	}
 
 	return eventData, nil

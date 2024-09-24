@@ -22,12 +22,12 @@ type DatabaseConfiguration struct {
 }
 
 type BlockchainConfiguration struct {
-	RpcUrl            string `mapstructure:"RPC_URL"`
-	ChainID           uint32 `mapstructure:"CHAIN_ID"`
-	PrivateKeyReward  string `mapstructure:"PRIVATE_KEY_REWARD"`
-	RewardAddress     string `mapstructure:"REWARD_ADDRESS"`
-	LifePointAddress  string `mapstructure:"LIFE_POINT_ADDRESS"`
-	MPContractAddress string `mapstructure:"MP_CONTRACT_ADDRESS"`
+	RpcUrl                    string `mapstructure:"RPC_URL"`
+	ChainID                   uint32 `mapstructure:"CHAIN_ID"`
+	PrivateKeyReward          string `mapstructure:"PRIVATE_KEY_REWARD"`
+	RewardAddress             string `mapstructure:"REWARD_ADDRESS"`
+	LifePointAddress          string `mapstructure:"LIFE_POINT_ADDRESS"`
+	MembershipContractAddress string `mapstructure:"MEMBERSHIP_CONTRACT_ADDRESS"`
 }
 
 type Configuration struct {
