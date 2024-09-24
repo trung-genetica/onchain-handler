@@ -19,7 +19,9 @@ func NewMembershipRepository(db *gorm.DB) interfaces.MembershipRepository {
 	}
 }
 
-func (r membershipRepository) CreateMembershipEventHistory(ctx context.Context, model model.MembershipEvents) error {
-	// TODO: implement here
+func (r membershipRepository) CreateMembershipEventHistory(ctx context.Context, membershipEvent model.MembershipEvents) error {
+	if err := r.db.WithContext(ctx).Create(&membershipEvent).Error; err != nil {
+		return err
+	}
 	return nil
 }
