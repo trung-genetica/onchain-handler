@@ -38,7 +38,7 @@ func NewRewardUCase(rewardRepository interfaces.RewardRepository, config *conf.C
 }
 
 // DistributeRewards handles the entire process of reward distribution
-func (u *rewardUCase) DistributeRewards(ctx context.Context, payloads []dto.CreateRewardPayload) error {
+func (u *rewardUCase) DistributeRewards(ctx context.Context, payloads []dto.CreateRewardPayloadDTO) error {
 	// Convert the payload into recipients
 	recipients, err := u.convertToRecipients(payloads)
 	if err != nil {
@@ -61,7 +61,7 @@ func (u *rewardUCase) DistributeRewards(ctx context.Context, payloads []dto.Crea
 }
 
 // convertToRecipients converts the payload into recipients (address -> token amount in smallest unit)
-func (u *rewardUCase) convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, error) {
+func (u *rewardUCase) convertToRecipients(req []dto.CreateRewardPayloadDTO) (map[string]*big.Int, error) {
 	recipients := make(map[string]*big.Int)
 
 	for _, payload := range req {
@@ -85,7 +85,7 @@ func (u *rewardUCase) convertToRecipients(req []dto.CreateRewardPayload) (map[st
 }
 
 // prepareRewardHistory prepares reward history based on the payload
-func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayload) ([]model.Reward, error) {
+func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayloadDTO) ([]model.Reward, error) {
 	var rewards []model.Reward
 
 	for _, payload := range req {

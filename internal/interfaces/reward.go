@@ -12,5 +12,5 @@ type RewardRepository interface {
 }
 
 type RewardUCase interface {
-	DistributeRewards(ctx context.Context, payloads []dto.CreateRewardPayload) error
+	DistributeRewards(ctx context.Context, payloads []dto.CreateRewardPayloadDTO) error
 }

@@ -6,8 +6,6 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/dto"
 )
 
-const tableName = "reward"
-
 type Reward struct {
 	ID               uint64    `json:"id" gorm:"primaryKey"`
 	RewardAddress    string    `json:"reward_address"`
@@ -21,11 +19,11 @@ type Reward struct {
 }
 
 func (m *Reward) TableName() string {
-	return tableName
+	return "reward"
 }
 
-func (m *Reward) ToDto() dto.Reward {
-	return dto.Reward{
+func (m *Reward) ToDto() dto.RewardDTO {
+	return dto.RewardDTO{
 		ID:               m.ID,
 		RewardAddress:    m.RewardAddress,
 		RecipientAddress: m.RecipientAddress,

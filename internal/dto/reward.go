@@ -1,6 +1,6 @@
 package dto
 
-type Reward struct {
+type RewardDTO struct {
 	ID               uint64 `json:"id"`
 	RewardAddress    string `json:"reward_address"`
 	RecipientAddress string `json:"recipient_address"`

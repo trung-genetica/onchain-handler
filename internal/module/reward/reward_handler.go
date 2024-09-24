@@ -33,7 +33,7 @@ func NewRewardHandler(ucase interfaces.RewardUCase) *RewardHandler {
 // @Failure 417 		{object}	util.GeneralError
 // @Router 	/api/v1/rewards [post]
 func (h *RewardHandler) Reward(ctx *gin.Context) {
-	var req []dto.CreateRewardPayload
+	var req []dto.CreateRewardPayloadDTO
 	if err := ctx.BindJSON(&req); err != nil {
 		log.LG.Errorf("Failed to parse reward payload: %v", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid payload"})
