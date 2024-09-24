@@ -10,7 +10,7 @@ linters:
   enable:
     - errcheck
     - dogsled
-    - exportloopref
+    - copyloopvar
     - goconst
     - gocritic
     - gci

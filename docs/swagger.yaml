@@ -6,6 +6,23 @@ definitions:
       token_amount:
         type: string
     type: object
+  dto.MembershipEventsDTO:
+    properties:
+      amount:
+        type: string
+      end_duration:
+        type: string
+      id:
+        type: integer
+      order_id:
+        type: integer
+      status:
+        type: integer
+      transaction_hash:
+        type: string
+      user_address:
+        type: string
+    type: object
   util.GeneralError:
     properties:
       code:
@@ -23,6 +40,39 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/v1/membership:
+    get:
+      consumes:
+      - application/json
+      description: Get membership event by order ID
+      parameters:
+      - description: Order ID to query
+        in: query
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MembershipEventsDTO'
+        "400":
+          description: Invalid Order ID
+          schema:
+            $ref: '#/definitions/util.GeneralError'
+        "404":
+          description: Membership event not found
+          schema:
+            $ref: '#/definitions/util.GeneralError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/util.GeneralError'
+      summary: Get membership event by order ID
+      tags:
+      - membership
   /api/v1/rewards:
     post:
       consumes:
@@ -46,12 +96,12 @@ paths:
             items:
               $ref: '#/definitions/dto.CreateRewardPayloadDTO'
             type: array
-        "417":
-          description: Expectation Failed
+        "400":
+          description: Invalid payload
           schema:
             $ref: '#/definitions/util.GeneralError'
-        "424":
-          description: Failed Dependency
+        "500":
+          description: Internal server error
           schema:
             $ref: '#/definitions/util.GeneralError'
       summary: Reward

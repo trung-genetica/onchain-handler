@@ -15,6 +15,56 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/membership": {
+            "get": {
+                "description": "Get membership event by order ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "membership"
+                ],
+                "summary": "Get membership event by order ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order ID to query",
+                        "name": "orderId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.MembershipEventsDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Order ID",
+                        "schema": {
+                            "$ref": "#/definitions/util.GeneralError"
+                        }
+                    },
+                    "404": {
+                        "description": "Membership event not found",
+                        "schema": {
+                            "$ref": "#/definitions/util.GeneralError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/util.GeneralError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/rewards": {
             "post": {
                 "description": "Reward",
@@ -52,14 +102,14 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "417": {
-                        "description": "Expectation Failed",
+                    "400": {
+                        "description": "Invalid payload",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
                     },
-                    "424": {
-                        "description": "Failed Dependency",
+                    "500": {
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
@@ -76,6 +126,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token_amount": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MembershipEventsDTO": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "end_duration": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "transaction_hash": {
+                    "type": "string"
+                },
+                "user_address": {
                     "type": "string"
                 }
             }

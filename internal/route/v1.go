@@ -27,6 +27,9 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 
 	// SECTION: membership purchase
 	membershipRepository := membership.NewMembershipRepository(db)
+	membershipUCase := membership.NewMembershipUCase(membershipRepository)
+	membershipHandler := membership.NewMembershipHandler(membershipUCase)
+	appRouter.GET("/membership", membershipHandler.GetMembershipEventByOrderID)
 
 	// SECTION: events listener
 	membershipEventListener, err := blockchain.NewMembershipEventListener(

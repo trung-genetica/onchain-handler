@@ -20,7 +20,7 @@ func NewRewardRepository(db *gorm.DB) interfaces.RewardRepository {
 	}
 }
 
-func (r rewardRepository) CreateRewardsHistory(ctx context.Context, models []model.Reward) error {
+func (r *rewardRepository) CreateRewardsHistory(ctx context.Context, models []model.Reward) error {
 	// Use GORM to perform a bulk insert
 	err := r.db.WithContext(ctx).Create(&models).Error
 	if err != nil {

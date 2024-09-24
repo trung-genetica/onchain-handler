@@ -29,25 +29,30 @@ func NewRewardHandler(ucase interfaces.RewardUCase) *RewardHandler {
 // @Produce json
 // @Param 	payload	body 			[]dto.CreateRewardPayloadDTO true "Request reward tokens, required"
 // @Success 200 		{object}	[]dto.CreateRewardPayloadDTO "When success, return {"success": true}"
-// @Failure 424 		{object}	util.GeneralError
-// @Failure 417 		{object}	util.GeneralError
+// @Failure 400 		{object}	util.GeneralError "Invalid payload"
+// @Failure 500 		{object}	util.GeneralError "Internal server error"
 // @Router 	/api/v1/rewards [post]
 func (h *RewardHandler) Reward(ctx *gin.Context) {
 	var req []dto.CreateRewardPayloadDTO
-	if err := ctx.BindJSON(&req); err != nil {
-		log.LG.Errorf("Failed to parse reward payload: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid payload"})
+
+	// Step 1: Parse and validate the request payload
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		log.LG.Errorf("%s: %v", "Invalid payload", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid payload",
+			"details": err.Error(),
+		})
 		return
 	}
 
-	// Call the use case to distribute rewards
-	err := h.UCase.DistributeRewards(ctx, req)
-	if err != nil {
+	if err := h.UCase.DistributeRewards(ctx, req); err != nil {
 		log.LG.Errorf("Failed to distribute rewards: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to distribute rewards",
+			"details": err.Error(),
+		})
 		return
 	}
 
-	// Return success response
 	ctx.JSON(http.StatusOK, gin.H{"success": true})
 }
