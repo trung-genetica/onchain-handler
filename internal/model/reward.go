@@ -1,7 +1,6 @@
 package model
 
 import (
-	"math/big"
 	"time"
 
 	"github.com/genefriendway/onchain-handler/internal/dto"
@@ -14,7 +13,7 @@ type Reward struct {
 	RewardAddress    string    `json:"reward_address"`
 	RecipientAddress string    `json:"recipient_address"`
 	TransactionHash  string    `json:"transaction_hash"`
-	TokenAmount      *big.Int  `json:"token_amount"`
+	TokenAmount      string    `json:"token_amount"`
 	Status           int16     `json:"status"`
 	CreatedAt        time.Time `json:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at"`

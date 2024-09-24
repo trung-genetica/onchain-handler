@@ -114,13 +114,12 @@ func convertToRecipients(req []dto.CreateRewardPayload) (map[string]*big.Int, er
 	return recipients, nil
 }
 
-// prepareRewardHistory creates a slice of Reward structs from the request payload
 func (h *RewardHandler) prepareRewardHistory(req []dto.CreateRewardPayload, txHash string) ([]dto.Reward, error) {
 	rewardAddress := h.Config.Blockchain.RewardAddress
 	var rewards []dto.Reward
 
 	for _, payload := range req {
-		// Convert the token amount from string to *big.Int
+		// Validate that the TokenAmount is a valid number by attempting to convert it to *big.Int
 		tokenAmount := new(big.Int)
 		if _, success := tokenAmount.SetString(payload.TokenAmount, 10); !success {
 			return nil, fmt.Errorf("invalid token amount: %s", payload.TokenAmount)
@@ -130,7 +129,7 @@ func (h *RewardHandler) prepareRewardHistory(req []dto.CreateRewardPayload, txHa
 		reward := dto.Reward{
 			RecipientAddress: payload.RecipientAddress,
 			RewardAddress:    rewardAddress,
-			TokenAmount:      tokenAmount,
+			TokenAmount:      payload.TokenAmount, // Keep as string
 			TransactionHash:  txHash,
 		}
 		rewards = append(rewards, reward)
