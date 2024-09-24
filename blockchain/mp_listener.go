@@ -2,8 +2,11 @@ package blockchain
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math/big"
+	"os"
+	"path/filepath"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -14,6 +17,7 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
+// MPEventData represents the event data for a MembershipPurchased event
 type MPEventData struct {
 	User    common.Address
 	Amount  *big.Int
@@ -21,20 +25,31 @@ type MPEventData struct {
 	TxHash  string
 }
 
-// MPEventListener listens for the MembershipPurchased event and sends the event data to a channel.
+// MPEventListener listens for the MembershipPurchased event and sends the event data to a channel
 func MPEventListener(
 	client *ethclient.Client,
 	contractAddr common.Address,
-	parsedABI abi.ABI,
 	eventChan chan<- MPEventData,
-	errorChan chan<- error,
 ) {
 	log.LG.Info("Starting event listener for MembershipPurchased...")
+
+	abiFilePath, err := filepath.Abs("./contracts/abis/MembershipPurchase.abi.json")
+	if err != nil {
+		log.LG.Errorf("Failed to get absolute path for ABI file: %v", err)
+		return
+	}
+
+	// Load the ABI from the hardcoded file path
+	parsedABI, err := loadABI(abiFilePath)
+	if err != nil {
+		log.LG.Errorf("Failed to load ABI: %v", err)
+		return
+	}
 
 	// Subscribe to filter logs
 	logs, sub, err := subscribeToLogs(client, contractAddr)
 	if err != nil {
-		errorChan <- err
+		log.LG.Errorf("Failed to subscribe to logs: %v", err)
 		return
 	}
 
@@ -42,13 +57,13 @@ func MPEventListener(
 	for {
 		select {
 		case err := <-sub.Err():
-			errorChan <- fmt.Errorf("subscription error: %w", err)
+			log.LG.Errorf("Subscription error: %v", err)
 			return
 
 		case vLog := <-logs:
 			eventData, err := parseEventLog(vLog, parsedABI)
 			if err != nil {
-				errorChan <- err
+				log.LG.Errorf("Failed to unpack log: %v", err)
 				continue
 			}
 
@@ -58,7 +73,25 @@ func MPEventListener(
 	}
 }
 
-// subscribeToLogs creates a log subscription for the contract and returns the log channel and subscription.
+// loadABI loads and parses the ABI from a JSON file
+func loadABI(path string) (abi.ABI, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return abi.ABI{}, fmt.Errorf("failed to open ABI file: %w", err)
+	}
+	defer file.Close()
+
+	// Read and parse the ABI JSON file
+	var parsedABI abi.ABI
+	err = json.NewDecoder(file).Decode(&parsedABI)
+	if err != nil {
+		return abi.ABI{}, fmt.Errorf("failed to decode ABI JSON: %w", err)
+	}
+
+	return parsedABI, nil
+}
+
+// subscribeToLogs creates a log subscription for the contract and returns the log channel and subscription
 func subscribeToLogs(
 	client *ethclient.Client,
 	contractAddr common.Address,
@@ -76,7 +109,7 @@ func subscribeToLogs(
 	return logs, sub, nil
 }
 
-// parseEventLog unpacks the log data into the MPEventData structure.
+// parseEventLog unpacks the log data into the MPEventData structure
 func parseEventLog(
 	vLog types.Log,
 	parsedABI abi.ABI,
