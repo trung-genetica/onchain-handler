@@ -3,7 +3,7 @@ CREATE TABLE reward (
     reward_address VARCHAR(50) NOT NULL,
     recipient_address VARCHAR(50) NOT NULL,
     transaction_hash VARCHAR(66) NOT NULL,
-    token_amount VARCHAR(30) NOT NULL,  
+    token_amount NUMERIC(30, 0) NOT NULL, 
     status SMALLINT NOT NULL DEFAULT 0,    -- 0 for pending, 1 for success, -1 for failed 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
