@@ -30,7 +30,7 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 	membershipRepository := membership.NewMembershipRepository(db)
 	membershipUCase := membership.NewMembershipUCase(membershipRepository)
 	membershipHandler := membership.NewMembershipHandler(membershipUCase)
-	appRouter.GET("/membership", membershipHandler.GetMembershipEventByOrderID)
+	appRouter.GET("/membership/events", membershipHandler.GetMembershipEventsByOrderIDs)
 
 	// SECTION: events listener
 	membershipEventListener, err := blockchain.NewMembershipEventListener(

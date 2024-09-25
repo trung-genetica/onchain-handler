@@ -1,8 +1,10 @@
 package membership
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -21,50 +23,64 @@ func NewMembershipHandler(ucase interfaces.MembershipUCase) *MembershipHandler {
 	}
 }
 
-// GetMembershipEventByOrderID retrieves a membership event by order ID
-// @Summary Get membership event by order ID
-// @Description Get membership event by order ID
-// @Tags 	membership
-// @Accept	json
+// GetMembershipEventsByOrderIDs retrieves membership events by a list of order IDs.
+// @Summary Get membership events by order IDs
+// @Description Get a list of membership events based on provided order IDs
+// @Tags membership
+// @Accept json
 // @Produce json
-// @Param orderId query string true "Order ID to query"
-// @Success 200 		{object}	dto.MembershipEventsDTO
-// @Failure 400 		{object}	util.GeneralError "Invalid Order ID"
-// @Failure 404 		{object}	util.GeneralError "Membership event not found"
-// @Failure 500 		{object}	util.GeneralError "Internal server error"
-// @Router 	/api/v1/membership [get]
-func (h *MembershipHandler) GetMembershipEventByOrderID(ctx *gin.Context) {
-	// Extract orderId from query params and convert to uint64
-	orderIdStr := ctx.Query("orderId")
-	if orderIdStr == "" {
-		log.LG.Errorf("Order ID is required")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Order ID is required"})
+// @Param orderIds query string true "Comma-separated list of Order IDs"
+// @Success 200 {array} dto.MembershipEventsDTO
+// @Failure 400 {object} util.GeneralError "Invalid Order IDs"
+// @Failure 404 {object} util.GeneralError "Membership events not found"
+// @Failure 500 {object} util.GeneralError "Internal server error"
+// @Router /api/v1/membership/events [get]
+func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
+	// Extract order IDs from query params and split by comma
+	orderIDsStr := ctx.Query("orderIds")
+	if orderIDsStr == "" {
+		log.LG.Errorf("Order IDs are required")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Order IDs are required"})
 		return
 	}
 
-	// Convert orderId to uint64
-	orderId, err := strconv.ParseUint(orderIdStr, 10, 64)
+	// Split the comma-separated IDs and parse them into uint64
+	orderIDs, err := parseOrderIDs(orderIDsStr)
 	if err != nil {
-		log.LG.Errorf("Invalid Order ID: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order ID"})
+		log.LG.Errorf("Invalid Order IDs: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order IDs"})
 		return
 	}
 
-	// Fetch the membership event using the use case
-	event, err := h.UCase.GetMembershipEventByOrderID(ctx, orderId)
+	// Fetch the membership events using the use case
+	events, err := h.UCase.GetMembershipEventsByOrderIDs(ctx, orderIDs)
 	if err != nil {
-		log.LG.Errorf("Failed to retrieve membership event: %v", err)
+		log.LG.Errorf("Failed to retrieve membership events: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
 	}
 
-	// If no event is found, return a 404 response
-	if event == nil {
-		log.LG.Errorf("Membership event not found for Order ID: %d", orderId)
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Membership event not found"})
+	// If no events are found, return a 404 response
+	if events == nil {
+		log.LG.Error("No membership events found for provided Order IDs")
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Membership events not found"})
 		return
 	}
 
 	// Return the event data as a JSON response
-	ctx.JSON(http.StatusOK, event)
+	ctx.JSON(http.StatusOK, events)
+}
+
+// parseOrderIDs parses a comma-separated string of order IDs into a slice of uint64.
+func parseOrderIDs(orderIDsStr string) ([]uint64, error) {
+	var orderIDs []uint64
+	idStrs := strings.Split(orderIDsStr, ",")
+	for _, idStr := range idStrs {
+		orderID, err := strconv.ParseUint(strings.TrimSpace(idStr), 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("invalid Order ID: %v", err)
+		}
+		orderIDs = append(orderIDs, orderID)
+	}
+	return orderIDs, nil
 }

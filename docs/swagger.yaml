@@ -40,15 +40,15 @@ definitions:
 info:
   contact: {}
 paths:
-  /api/v1/membership:
+  /api/v1/membership/events:
     get:
       consumes:
       - application/json
-      description: Get membership event by order ID
+      description: Get a list of membership events based on provided order IDs
       parameters:
-      - description: Order ID to query
+      - description: Comma-separated list of Order IDs
         in: query
-        name: orderId
+        name: orderIds
         required: true
         type: string
       produces:
@@ -57,20 +57,22 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.MembershipEventsDTO'
+            items:
+              $ref: '#/definitions/dto.MembershipEventsDTO'
+            type: array
         "400":
-          description: Invalid Order ID
+          description: Invalid Order IDs
           schema:
             $ref: '#/definitions/util.GeneralError'
         "404":
-          description: Membership event not found
+          description: Membership events not found
           schema:
             $ref: '#/definitions/util.GeneralError'
         "500":
           description: Internal server error
           schema:
             $ref: '#/definitions/util.GeneralError'
-      summary: Get membership event by order ID
+      summary: Get membership events by order IDs
       tags:
       - membership
   /api/v1/rewards:

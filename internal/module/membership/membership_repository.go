@@ -2,6 +2,7 @@ package membership
 
 import (
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 
@@ -35,4 +36,21 @@ func (r *membershipRepository) GetMembershipEventByOrderID(ctx context.Context, 
 		return nil, err
 	}
 	return &membershipEvent, nil
+}
+
+// GetMembershipEventsByOrderIDs retrieves a list of membership events based on a slice of order IDs.
+func (r *membershipRepository) GetMembershipEventsByOrderIDs(ctx context.Context, orderIDs []uint64) ([]model.MembershipEvents, error) {
+	var membershipEvents []model.MembershipEvents
+	if len(orderIDs) == 0 {
+		return nil, fmt.Errorf("orderIDs cannot be empty")
+	}
+
+	// Query the database to get all events matching the given order IDs.
+	if err := r.db.WithContext(ctx).
+		Where("order_id IN ?", orderIDs).
+		Find(&membershipEvents).Error; err != nil {
+		return nil, err
+	}
+
+	return membershipEvents, nil
 }

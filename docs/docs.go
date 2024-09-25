@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/membership": {
+        "/api/v1/membership/events": {
             "get": {
-                "description": "Get membership event by order ID",
+                "description": "Get a list of membership events based on provided order IDs",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,12 +27,12 @@ const docTemplate = `{
                 "tags": [
                     "membership"
                 ],
-                "summary": "Get membership event by order ID",
+                "summary": "Get membership events by order IDs",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Order ID to query",
-                        "name": "orderId",
+                        "description": "Comma-separated list of Order IDs",
+                        "name": "orderIds",
                         "in": "query",
                         "required": true
                     }
@@ -41,17 +41,20 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.MembershipEventsDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.MembershipEventsDTO"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid Order ID",
+                        "description": "Invalid Order IDs",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
                     },
                     "404": {
-                        "description": "Membership event not found",
+                        "description": "Membership events not found",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
