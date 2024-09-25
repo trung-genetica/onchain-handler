@@ -23,12 +23,12 @@ import (
 )
 
 func RunApp(config *conf.Configuration) {
-	// Set zerolog global level
-	log.LG = log.NewZerologLogger(os.Stdout, zerolog.InfoLevel)
-
 	// Use release mode in production
 	if config.Env == "prod" {
+		log.LG = log.NewZerologLogger(os.Stdout, zerolog.InfoLevel)
 		gin.SetMode(gin.ReleaseMode)
+	} else {
+		log.LG = log.NewZerologLogger(os.Stdout, zerolog.DebugLevel)
 	}
 
 	r := gin.New()
