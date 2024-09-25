@@ -12,11 +12,12 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
+// MembershipHandler handles membership-related requests.
 type MembershipHandler struct {
 	UCase interfaces.MembershipUCase
 }
 
-// NewMembershipHandler initializes the MembershipHandler
+// NewMembershipHandler initializes a new MembershipHandler.
 func NewMembershipHandler(ucase interfaces.MembershipUCase) *MembershipHandler {
 	return &MembershipHandler{
 		UCase: ucase,
@@ -32,11 +33,10 @@ func NewMembershipHandler(ucase interfaces.MembershipUCase) *MembershipHandler {
 // @Param orderIds query string true "Comma-separated list of Order IDs"
 // @Success 200 {array} dto.MembershipEventsDTO
 // @Failure 400 {object} util.GeneralError "Invalid Order IDs"
-// @Failure 404 {object} util.GeneralError "Membership events not found"
 // @Failure 500 {object} util.GeneralError "Internal server error"
 // @Router /api/v1/membership/events [get]
 func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
-	// Extract order IDs from query params and split by comma
+	// Extract order IDs from query params and split by comma.
 	orderIDsStr := ctx.Query("orderIds")
 	if orderIDsStr == "" {
 		log.LG.Errorf("Order IDs are required")
@@ -44,7 +44,7 @@ func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
 		return
 	}
 
-	// Split the comma-separated IDs and parse them into uint64
+	// Parse the comma-separated IDs into uint64 slice.
 	orderIDs, err := parseOrderIDs(orderIDsStr)
 	if err != nil {
 		log.LG.Errorf("Invalid Order IDs: %v", err)
@@ -52,7 +52,7 @@ func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
 		return
 	}
 
-	// Fetch the membership events using the use case
+	// Fetch the membership events using the use case.
 	events, err := h.UCase.GetMembershipEventsByOrderIDs(ctx, orderIDs)
 	if err != nil {
 		log.LG.Errorf("Failed to retrieve membership events: %v", err)
@@ -60,14 +60,13 @@ func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
 		return
 	}
 
-	// If no events are found, return a 404 response
-	if events == nil {
-		log.LG.Error("No membership events found for provided Order IDs")
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Membership events not found"})
+	if len(events) == 0 {
+		log.LG.Warn("No membership events found for provided Order IDs")
+		ctx.JSON(http.StatusOK, []interface{}{}) // Respond with an empty array and 200 status code.
 		return
 	}
 
-	// Return the event data as a JSON response
+	// Return the event data as a JSON response.
 	ctx.JSON(http.StatusOK, events)
 }
 

@@ -53,12 +53,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/util.GeneralError"
                         }
                     },
-                    "404": {
-                        "description": "Membership events not found",
-                        "schema": {
-                            "$ref": "#/definitions/util.GeneralError"
-                        }
-                    },
                     "500": {
                         "description": "Internal server error",
                         "schema": {

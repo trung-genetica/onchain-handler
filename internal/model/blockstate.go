@@ -2,8 +2,8 @@ package model
 
 // BlockState represents the state of the last processed block.
 type BlockState struct {
-	ID        uint   `gorm:"primaryKey;autoIncrement"`
-	LastBlock uint64 `gorm:"not null"` // The last processed block
+	ID        uint   `json:"id" gorm:"primaryKey;autoIncrement"`
+	LastBlock uint64 `json:"last_block"` // The last processed block
 }
 
 func (m *BlockState) TableName() string {

@@ -8,14 +8,14 @@ import (
 
 type MembershipEvents struct {
 	ID              uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
-	UserAddress     string    `json:"user_address" gorm:"column:user_address"`
-	OrderID         uint64    `json:"order_id" gorm:"column:order_id"`
-	TransactionHash string    `json:"transaction_hash" gorm:"column:transaction_hash"`
-	Amount          string    `json:"amount" gorm:"column:amount"`
-	Status          uint8     `json:"status" gorm:"column:status"`
-	CreatedAt       time.Time `json:"created_at" gorm:"column:created_at"`
-	UpdatedAt       time.Time `json:"updated_at" gorm:"column:updated_at"`
-	EndDuration     time.Time `json:"end_duration" gorm:"column:end_duration"`
+	UserAddress     string    `json:"user_address"`
+	OrderID         uint64    `json:"order_id"`
+	TransactionHash string    `json:"transaction_hash"`
+	Amount          string    `json:"amount"`
+	Status          uint8     `json:"status"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
+	EndDuration     time.Time `json:"end_duration"`
 }
 
 func (m *MembershipEvents) TableName() string {
