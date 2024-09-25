@@ -12,6 +12,12 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
+const (
+	DefaultEventChannelBufferSize = 25   // Buffer size for event channel
+	DefaultBlockOffset            = 10   // Default block offset if last processed block is missing
+	MaxBlockRange                 = 2048 // Maximum number of blocks to query at once
+)
+
 // BaseEventListener represents the shared behavior of any blockchain event listener.
 type BaseEventListener struct {
 	ETHClient       *ethclient.Client
@@ -29,7 +35,7 @@ func NewBaseEventListener(
 	lastBlockRepo interfaces.BlockStateRepository,
 ) *BaseEventListener {
 	// Create a base listener with a buffered event channel.
-	eventChan := make(chan interface{}, 25)
+	eventChan := make(chan interface{}, DefaultEventChannelBufferSize)
 
 	return &BaseEventListener{
 		ETHClient:       client,
@@ -69,16 +75,15 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 	lastBlock, err := listener.LastBlockRepo.GetLastProcessedBlock(ctx)
 	if err != nil || lastBlock == 0 {
 		log.LG.Warnf("Failed to get last processed block or it was zero: %v", err)
-		lastBlock = latestBlock.Uint64() - 10 // Default to 10 blocks before the latest block
+		lastBlock = latestBlock.Uint64() - DefaultBlockOffset // Default to the offset before the latest block
 	}
 
 	// Poll for logs in chunks to avoid querying too many blocks at once.
-	const maxBlockRange = 2048
 	currentBlock := lastBlock
 
 	for currentBlock < latestBlock.Uint64() {
 		// Determine the upper bound for this chunk.
-		endBlock := currentBlock + maxBlockRange
+		endBlock := currentBlock + MaxBlockRange
 		if endBlock > latestBlock.Uint64() {
 			endBlock = latestBlock.Uint64()
 		}
