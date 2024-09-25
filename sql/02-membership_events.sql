@@ -11,6 +11,7 @@ CREATE TABLE membership_events (
 );
 
 CREATE INDEX membership_events_order_id_idx ON membership_events (order_id);
+CREATE INDEX idx_membership_status_end_duration ON membership_events (status, end_duration);
 
 -- Create a trigger to update 'updated_at' column on update
 CREATE OR REPLACE FUNCTION update_updated_at_column()
