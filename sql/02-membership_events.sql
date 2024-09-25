@@ -7,7 +7,7 @@ CREATE TABLE membership_events (
     status SMALLINT NOT NULL DEFAULT 0,  -- 0 for pending, 1 for success, -1 for failed 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    end_duration TIMESTAMP  -- The expiry date/time of the membership
+    end_duration TIMESTAMP NOT NULL -- The expiry date/time of the membership
 );
 
 CREATE INDEX membership_events_order_id_idx ON membership_events (order_id);
