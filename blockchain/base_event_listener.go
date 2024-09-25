@@ -42,10 +42,19 @@ func NewBaseEventListener(
 ) *BaseEventListener {
 	eventChan := make(chan interface{}, DefaultEventChannelBufferSize)
 
-	// Initialize current block based on the optional parameter
-	currentBlock := uint64(0) // Default value
-	if startBlockListener != nil {
+	// Fetch the last processed block from the repository
+	lastBlock, err := lastBlockRepo.GetLastProcessedBlock(context.Background())
+	if err != nil || lastBlock == 0 {
+		log.LG.Warnf("Failed to get last processed block or it was zero: %v", err)
+	}
+
+	// Determine the starting block
+	currentBlock := lastBlock + 1 // Start at the block after the last processed block
+
+	if startBlockListener != nil && *startBlockListener > lastBlock {
+		// Override the current block with the startBlockListener if it's higher than the last processed block
 		currentBlock = *startBlockListener
+		log.LG.Debugf("Using startBlockListener: %d instead of last processed block: %d", *startBlockListener, lastBlock)
 	}
 
 	return &BaseEventListener{
@@ -54,7 +63,7 @@ func NewBaseEventListener(
 		EventChan:       eventChan,
 		ParsedABI:       parsedABI,
 		LastBlockRepo:   lastBlockRepo,
-		CurrentBlock:    currentBlock, // Store the current block
+		CurrentBlock:    currentBlock, // Store the final determined current block
 	}
 }
 
