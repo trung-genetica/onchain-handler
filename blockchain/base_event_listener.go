@@ -95,7 +95,7 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 		}
 	}
 
-	currentBlock := lastBlock
+	currentBlock := lastBlock + 1
 
 	for currentBlock < latestBlock.Uint64() {
 		endBlock := currentBlock + MaxBlockRange
