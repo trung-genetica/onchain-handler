@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"math/big"
 	"path/filepath"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/genefriendway/onchain-handler/internal/interfaces"
+	"github.com/genefriendway/onchain-handler/internal/model"
+	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
 // MembershipEventData represents the event data for a MembershipPurchased event.
@@ -81,6 +84,35 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 		OrderID:  orderID,
 		Duration: event.Duration,
 		TxHash:   vLog.TxHash.Hex(),
+	}
+
+	var endDuration time.Time
+	switch event.Duration {
+	case 0:
+		endDuration = time.Now().AddDate(0, 0, 365) // Add 365 days
+	case 1:
+		endDuration = time.Now().AddDate(0, 0, 1095) // Add 1095 days (3 years)
+	default:
+		log.LG.Errorf("Invalid duration value: %d for OrderID %d", event.Duration, event.OrderID)
+		return nil, fmt.Errorf("invalid duration value: %d", event.Duration)
+	}
+
+	eventModel := model.MembershipEvents{
+		UserAddress:     event.User.Hex(),
+		OrderID:         event.OrderID,
+		TransactionHash: eventData.TxHash,
+		Amount:          eventData.Amount.String(),
+		Status:          1, // Assuming 1 means a successful event, adjust accordingly
+		EndDuration:     endDuration,
+		CreatedAt:       time.Now(),
+		UpdatedAt:       time.Now(),
+	}
+
+	// Store event in the repository
+	err = listener.Repo.CreateMembershipEventHistory(context.Background(), eventModel)
+	if err != nil {
+		log.LG.Errorf("Failed to create membership event history for OrderID %d: %v", event.OrderID, err)
+		return nil, err
 	}
 
 	return eventData, nil

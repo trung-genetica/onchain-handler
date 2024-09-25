@@ -3,7 +3,7 @@ CREATE TABLE membership_events (
     user_address VARCHAR(50) NOT NULL,
     order_id BIGINT NOT NULL,
     transaction_hash VARCHAR(66) NOT NULL,
-    amount DECIMAL(30, 18),
+    amount DECIMAL(50, 18),
     status SMALLINT NOT NULL DEFAULT 0,  -- 0 for pending, 1 for success, -1 for failed 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
