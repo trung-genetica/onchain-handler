@@ -76,15 +76,19 @@ func (listener *BaseEventListener) RunListener(ctx context.Context, parseAndProc
 }
 
 // listen polls the blockchain for logs and parses them.
+// listen polls the blockchain for logs and parses them.
 func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFunc func(types.Log) (interface{}, error)) {
 	log.LG.Info("Starting event listener...")
 
+	// Retrieve the latest block number from the blockchain.
 	latestBlock, err := getLatestBlockNumber(ctx, listener.ETHClient)
 	if err != nil {
-		log.LG.Errorf("Failed to retrieve latest block number from blockchain: %v", err)
+		log.LG.Errorf("Failed to retrieve the latest block number from blockchain: %v", err)
 		return
 	}
+	log.LG.Debugf("Retrieved latest block number from blockchain: %d", latestBlock.Uint64())
 
+	// Get the last processed block from the repository, defaulting to an offset if not found.
 	lastBlock, err := listener.LastBlockRepo.GetLastProcessedBlock(ctx)
 	if err != nil || lastBlock == 0 {
 		log.LG.Warnf("Failed to get last processed block or it was zero: %v", err)
@@ -97,49 +101,68 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 
 	currentBlock := lastBlock + 1
 
-	for currentBlock < latestBlock.Uint64() {
+	// Iterate over blocks until the current block reaches the latest block.
+	for currentBlock <= latestBlock.Uint64() {
+		log.LG.Infof("Listening for events starting at block: %d", currentBlock)
+
+		// Determine the end block while respecting MaxBlockRange and the latest block.
 		endBlock := currentBlock + MaxBlockRange
 		if endBlock > latestBlock.Uint64() {
 			endBlock = latestBlock.Uint64()
 		}
 
-		var logs []types.Log
-		for retries := 0; retries < MaxRetries; retries++ {
-			logs, err = pollForLogsFromBlock(ctx, listener.ETHClient, listener.ContractAddress, currentBlock, endBlock)
-			if err != nil {
-				log.LG.Warnf("Failed to poll logs from block %d to %d: %v. Retrying...", currentBlock, endBlock, err)
-				time.Sleep(RetryDelay)
-				continue
-			}
-			break
-		}
-		if err != nil {
-			log.LG.Errorf("Max retries reached. Failed to poll logs from block %d to %d: %v", currentBlock, endBlock, err)
-			return
-		}
-
-		for _, vLog := range logs {
-			eventData, err := parseAndProcessFunc(vLog)
-			if err != nil {
-				log.LG.Errorf("Failed to parse log: %v", err)
-				continue
+		// Process the blocks in chunks of 10 blocks (or DefaultBlockOffset).
+		for chunkStart := currentBlock; chunkStart <= endBlock; chunkStart += DefaultBlockOffset {
+			chunkEnd := chunkStart + DefaultBlockOffset - 1
+			if chunkEnd > endBlock {
+				chunkEnd = endBlock
 			}
 
-			select {
-			case listener.EventChan <- eventData:
-				log.LG.Infof("Event successfully sent to channel: %+v", eventData)
+			log.LG.Infof("Processing block chunk: %d to %d", chunkStart, chunkEnd)
 
-				if err := listener.LastBlockRepo.UpdateLastProcessedBlock(ctx, vLog.BlockNumber); err != nil {
-					log.LG.Errorf("Failed to update last processed block: %v", err)
+			var logs []types.Log
+			// Poll logs from the blockchain with retries in case of failure.
+			for retries := 0; retries < MaxRetries; retries++ {
+				// Poll logs from the chunk of blocks.
+				logs, err = pollForLogsFromBlock(ctx, listener.ETHClient, listener.ContractAddress, chunkStart, chunkEnd)
+				if err != nil {
+					log.LG.Warnf("Failed to poll logs from block %d to %d: %v. Retrying...", chunkStart, chunkEnd, err)
+					time.Sleep(RetryDelay)
+					continue
 				}
-			case <-ctx.Done():
-				log.LG.Info("Context canceled, stopping log processing.")
+				break
+			}
+			if err != nil {
+				log.LG.Errorf("Max retries reached. Failed to poll logs from block %d to %d: %v", chunkStart, chunkEnd, err)
 				return
-			default:
-				log.LG.Warnf("Event channel is full, dropping event: %+v", eventData)
+			}
+
+			// Process each log retrieved from the blockchain.
+			for _, vLog := range logs {
+				eventData, err := parseAndProcessFunc(vLog)
+				if err != nil {
+					log.LG.Errorf("Failed to parse log: %v", err)
+					continue
+				}
+
+				select {
+				case listener.EventChan <- eventData:
+					log.LG.Infof("Event successfully sent to channel: %+v", eventData)
+
+					// Update the last processed block number in the repository.
+					if err := listener.LastBlockRepo.UpdateLastProcessedBlock(ctx, vLog.BlockNumber); err != nil {
+						log.LG.Errorf("Failed to update last processed block: %v", err)
+					}
+				case <-ctx.Done():
+					log.LG.Info("Context canceled, stopping log processing.")
+					return
+				default:
+					log.LG.Warnf("Event channel is full, dropping event: %+v", eventData)
+				}
 			}
 		}
 
+		// Move to the next set of blocks to process.
 		currentBlock = endBlock + 1
 	}
 }
