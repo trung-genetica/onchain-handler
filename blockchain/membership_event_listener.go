@@ -19,7 +19,7 @@ type MembershipEventData struct {
 	Amount   *big.Int
 	OrderID  uint64
 	TxHash   string
-	Duration uint // Duration as an integer representing the type (0 for 1 year, 1 for 3 years)
+	Duration uint8 // Duration as an integer representing the type (0 for 1 year, 1 for 3 years)
 }
 
 // MembershipEventListener listens for MembershipPurchased events.
@@ -58,7 +58,7 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 		User     common.Address
 		Amount   *big.Int
 		OrderID  uint64
-		Duration uint
+		Duration uint8
 	}{}
 
 	// Unpack the log data into the event structure.
