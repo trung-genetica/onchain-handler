@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"os"
@@ -14,6 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 // loadABI loads and parses the ABI from a JSON file
@@ -90,4 +92,17 @@ func parseHexToUint64(hexStr string) (uint64, error) {
 	}
 
 	return value, nil
+}
+
+// isDuplicateTransactionError checks if the error is due to a unique constraint violation (e.g., duplicate transaction hash).
+func isDuplicateTransactionError(err error) bool {
+	var pqErr *pgconn.PgError
+	// Check if the error is a PostgreSQL error and has a unique violation code
+	if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+		// Optionally, further verify if the constraint name is "unique_transaction_hash"
+		if strings.Contains(pqErr.Message, "unique_transaction_hash") {
+			return true
+		}
+	}
+	return false
 }

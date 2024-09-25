@@ -102,10 +102,15 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 	}
 
 	// Store event in the repository
+	// Handle duplicate transaction errors gracefully
 	err = listener.Repo.CreateMembershipEventHistory(context.Background(), eventModel)
 	if err != nil {
-		log.LG.Errorf("Failed to create membership event history for OrderID %d: %v", event.OrderID, err)
-		return nil, err
+		if isDuplicateTransactionError(err) {
+			log.LG.Warnf("Duplicate transaction detected for TxHash %s: %v", vLog.TxHash.Hex(), err)
+		} else {
+			log.LG.Errorf("Failed to create membership event history for OrderID %d: %v", event.OrderID, err)
+			return nil, err
+		}
 	}
 
 	// Create event data.
