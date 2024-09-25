@@ -76,22 +76,20 @@ func (listener *BaseEventListener) RunListener(ctx context.Context, parseAndProc
 }
 
 // listen polls the blockchain for logs and parses them.
-// listen polls the blockchain for logs and parses them.
 func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFunc func(types.Log) (interface{}, error)) {
 	log.LG.Info("Starting event listener...")
-
-	// Retrieve the latest block number from the blockchain.
-	latestBlock, err := getLatestBlockNumber(ctx, listener.ETHClient)
-	if err != nil {
-		log.LG.Errorf("Failed to retrieve the latest block number from blockchain: %v", err)
-		return
-	}
-	log.LG.Debugf("Retrieved latest block number from blockchain: %d", latestBlock.Uint64())
 
 	// Get the last processed block from the repository, defaulting to an offset if not found.
 	lastBlock, err := listener.LastBlockRepo.GetLastProcessedBlock(ctx)
 	if err != nil || lastBlock == 0 {
 		log.LG.Warnf("Failed to get last processed block or it was zero: %v", err)
+		latestBlock, err := getLatestBlockNumber(ctx, listener.ETHClient)
+		if err != nil {
+			log.LG.Errorf("Failed to retrieve the latest block number from blockchain: %v", err)
+			return
+		}
+		log.LG.Debugf("Retrieved latest block number from blockchain: %d", latestBlock.Uint64())
+
 		if latestBlock.Uint64() > DefaultBlockOffset {
 			lastBlock = latestBlock.Uint64() - DefaultBlockOffset
 		} else {
@@ -101,9 +99,24 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 
 	currentBlock := lastBlock + 1
 
-	// Iterate over blocks until the current block reaches the latest block.
-	for currentBlock <= latestBlock.Uint64() {
-		log.LG.Infof("Listening for events starting at block: %d", currentBlock)
+	// Continuously listen for new events.
+	for {
+		// Retrieve the latest block number from the blockchain to stay up-to-date.
+		latestBlock, err := getLatestBlockNumber(ctx, listener.ETHClient)
+		if err != nil {
+			log.LG.Errorf("Failed to retrieve the latest block number from blockchain: %v", err)
+			time.Sleep(RetryDelay)
+			continue
+		}
+
+		// Ensure we do not go beyond the latest block.
+		if currentBlock > latestBlock.Uint64() {
+			log.LG.Debugf("No new blocks to process. Waiting for new blocks...")
+			time.Sleep(RetryDelay) // Wait before rechecking to prevent excessive polling
+			continue
+		}
+
+		log.LG.Debugf("Listening for events starting at block: %d", currentBlock)
 
 		// Determine the end block while respecting MaxBlockRange and the latest block.
 		endBlock := currentBlock + MaxBlockRange
@@ -118,7 +131,7 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 				chunkEnd = endBlock
 			}
 
-			log.LG.Infof("Processing block chunk: %d to %d", chunkStart, chunkEnd)
+			log.LG.Debugf("Processing block chunk: %d to %d", chunkStart, chunkEnd)
 
 			var logs []types.Log
 			// Poll logs from the blockchain with retries in case of failure.
