@@ -7,7 +7,7 @@ import (
 )
 
 type Reward struct {
-	ID               uint64    `json:"id" gorm:"primaryKey"`
+	ID               uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
 	RewardAddress    string    `json:"reward_address"`
 	RecipientAddress string    `json:"recipient_address"`
 	TransactionHash  string    `json:"transaction_hash"`

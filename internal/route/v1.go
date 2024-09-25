@@ -10,6 +10,7 @@ import (
 
 	"github.com/genefriendway/onchain-handler/blockchain"
 	"github.com/genefriendway/onchain-handler/conf"
+	"github.com/genefriendway/onchain-handler/internal/module/blockstate"
 	"github.com/genefriendway/onchain-handler/internal/module/membership"
 	"github.com/genefriendway/onchain-handler/internal/module/reward"
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
@@ -36,6 +37,7 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 		ethClient,
 		config.Blockchain.MembershipContractAddress,
 		membershipRepository,
+		blockstate.NewBlockstateRepository(db),
 	)
 	if err != nil {
 		log.LG.Errorf("Failed to initialize MembershipEventListener: %v", err)

@@ -101,6 +101,14 @@ func (logger *ZerologLogger) Debugf(format string, values ...interface{}) {
 	logger.Instance.Debug().Timestamp().Msgf(format, values...)
 }
 
+func (logger *ZerologLogger) Warn(message string) {
+	logger.Instance.Warn().Timestamp().Msg(message)
+}
+
+func (logger *ZerologLogger) Warnf(format string, values ...interface{}) {
+	logger.Instance.Warn().Timestamp().Msgf(format, values...)
+}
+
 func (logger *ZerologLogger) WithInterface(key string, value interface{}) *ZerologLogger {
 	Instance := logger.Instance.With().Interface(key, value).Logger()
 	return &ZerologLogger{

@@ -7,7 +7,7 @@ import (
 )
 
 type MembershipEvents struct {
-	ID              uint64    `json:"id" gorm:"primaryKey"`
+	ID              uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserAddress     string    `json:"user_address" gorm:"column:user_address"`
 	OrderID         uint64    `json:"order_id" gorm:"column:order_id"`
 	TransactionHash string    `json:"transaction_hash" gorm:"column:transaction_hash"`
