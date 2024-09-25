@@ -28,6 +28,7 @@ type BlockchainConfiguration struct {
 	RewardAddress             string `mapstructure:"REWARD_ADDRESS"`
 	LifePointAddress          string `mapstructure:"LIFE_POINT_ADDRESS"`
 	MembershipContractAddress string `mapstructure:"MEMBERSHIP_CONTRACT_ADDRESS"`
+	StartBlockListener        uint64 `mapstructure:"START_BLOCK_LISTENER"`
 }
 
 type Configuration struct {

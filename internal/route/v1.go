@@ -38,6 +38,7 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 		config.Blockchain.MembershipContractAddress,
 		membershipRepository,
 		blockstate.NewBlockstateRepository(db),
+		&config.Blockchain.StartBlockListener,
 	)
 	if err != nil {
 		log.LG.Errorf("Failed to initialize MembershipEventListener: %v", err)

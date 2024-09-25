@@ -19,7 +19,7 @@ const (
 	DefaultBlockOffset            = 10              // Default block offset if last processed block is missing
 	MaxBlockRange                 = 2048            // Maximum number of blocks to query at once
 	MaxRetries                    = 3               // Maximum number of retries when polling fails
-	RetryDelay                    = 2 * time.Second // Delay between retries
+	RetryDelay                    = 3 * time.Second // Delay between retries
 )
 
 // BaseEventListener represents the shared behavior of any blockchain event listener.
@@ -28,7 +28,8 @@ type BaseEventListener struct {
 	ContractAddress common.Address
 	EventChan       chan interface{}
 	ParsedABI       abi.ABI
-	LastBlockRepo   interfaces.BlockStateRepository // Repository to store last processed block
+	LastBlockRepo   interfaces.BlockStateRepository
+	CurrentBlock    uint64
 }
 
 // NewBaseEventListener initializes a base listener.
@@ -37,8 +38,15 @@ func NewBaseEventListener(
 	contractAddr string,
 	parsedABI abi.ABI,
 	lastBlockRepo interfaces.BlockStateRepository,
+	startBlockListener *uint64,
 ) *BaseEventListener {
 	eventChan := make(chan interface{}, DefaultEventChannelBufferSize)
+
+	// Initialize current block based on the optional parameter
+	currentBlock := uint64(0) // Default value
+	if startBlockListener != nil {
+		currentBlock = *startBlockListener
+	}
 
 	return &BaseEventListener{
 		ETHClient:       client,
@@ -46,6 +54,7 @@ func NewBaseEventListener(
 		EventChan:       eventChan,
 		ParsedABI:       parsedABI,
 		LastBlockRepo:   lastBlockRepo,
+		CurrentBlock:    currentBlock, // Store the current block
 	}
 }
 
@@ -97,7 +106,11 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 		}
 	}
 
-	currentBlock := lastBlock + 1
+	// Initialize currentBlock based on the stored value
+	currentBlock := listener.CurrentBlock
+	if currentBlock == 0 {
+		currentBlock = lastBlock + 1
+	}
 
 	// Continuously listen for new events.
 	for {
@@ -146,50 +159,47 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 				break
 			}
 			if err != nil {
-				log.LG.Errorf("Max retries reached. Failed to poll logs from block %d to %d: %v", chunkStart, chunkEnd, err)
-				return
+				log.LG.Errorf("Max retries reached. Skipping block chunk %d to %d due to error: %v", chunkStart, chunkEnd, err)
+				break // Exit the loop if we cannot fetch logs
 			}
 
-			// Process each log retrieved from the blockchain.
-			for _, vLog := range logs {
-				eventData, err := parseAndProcessFunc(vLog)
+			// Process the retrieved logs.
+			for _, logEntry := range logs {
+				processedEvent, err := parseAndProcessFunc(logEntry)
 				if err != nil {
-					log.LG.Errorf("Failed to parse log: %v", err)
+					log.LG.Errorf("Failed to process log entry: %v", err)
 					continue
 				}
 
-				select {
-				case listener.EventChan <- eventData:
-					log.LG.Infof("Event successfully sent to channel: %+v", eventData)
-
-					// Update the last processed block number in the repository.
-					if err := listener.LastBlockRepo.UpdateLastProcessedBlock(ctx, vLog.BlockNumber); err != nil {
-						log.LG.Errorf("Failed to update last processed block: %v", err)
-					}
-				case <-ctx.Done():
-					log.LG.Info("Context canceled, stopping log processing.")
-					return
-				default:
-					log.LG.Warnf("Event channel is full, dropping event: %+v", eventData)
+				// Update the last processed block in the repository.
+				if err := listener.LastBlockRepo.UpdateLastProcessedBlock(ctx, currentBlock); err != nil {
+					log.LG.Errorf("Failed to update last processed block in repository: %v", err)
 				}
+
+				// Send the processed event to the channel.
+				listener.EventChan <- processedEvent
 			}
+
+			// Update the current block for the next iteration.
+			currentBlock = chunkEnd + 1
 		}
 
-		// Move to the next set of blocks to process.
-		currentBlock = endBlock + 1
+		// Update the last processed block in the repository.
+		if err := listener.LastBlockRepo.UpdateLastProcessedBlock(ctx, currentBlock); err != nil {
+			log.LG.Errorf("Failed to update last processed block in repository: %v", err)
+		}
 	}
 }
 
-// processEvents handles events from the event channel.
+// processEvents handles events from the EventChan.
 func (listener *BaseEventListener) processEvents(ctx context.Context) {
-	log.LG.Info("Starting process events...")
 	for {
 		select {
 		case event := <-listener.EventChan:
-			log.LG.Infof("Event processed: %+v", event)
+			log.LG.Debugf("Received event: %+v", event)
 
 		case <-ctx.Done():
-			log.LG.Info("Context canceled, stopping event processing.")
+			log.LG.Info("Stopping event processing...")
 			return
 		}
 	}

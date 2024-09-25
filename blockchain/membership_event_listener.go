@@ -37,6 +37,7 @@ func NewMembershipEventListener(
 	contractAddr string,
 	repo interfaces.MembershipRepository,
 	lastBlockRepo interfaces.BlockStateRepository,
+	startBlockListener *uint64,
 ) (*MembershipEventListener, error) {
 	abiFilePath, err := filepath.Abs("./contracts/abis/MembershipPurchase.abi.json")
 	if err != nil {
@@ -48,7 +49,7 @@ func NewMembershipEventListener(
 		return nil, fmt.Errorf("failed to load ABI: %w", err)
 	}
 
-	baseListener := NewBaseEventListener(client, contractAddr, parsedABI, lastBlockRepo)
+	baseListener := NewBaseEventListener(client, contractAddr, parsedABI, lastBlockRepo, startBlockListener)
 	return &MembershipEventListener{
 		BaseEventListener: baseListener,
 		Repo:              repo,
