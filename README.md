@@ -1,8 +1,9 @@
 # onchain-handler
 ## Install golangci-lint
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-## abigen
-abigen --abi=./contracts/abis/LifePointToken.abi.json --pkg=lptoken --out=./contracts/lptoken/LPToken.go
+## Generate Go bindings to interact with smart contracts
+mkdir -p ./contracts/abigen/lifepointtoken && touch ./contracts/abigen/lifepointtoken/LifePointToken.go
+abigen --abi=./contracts/abis/LifePointToken.abi.json --pkg=lifepointtoken --out=./contracts/abigen/lifepointtoken/LifePointToken.go
 ## Swagger
 http://localhost:8080/swagger/index.html
 ## How to run

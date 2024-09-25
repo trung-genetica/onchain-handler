@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/genefriendway/onchain-handler/conf"
-	"github.com/genefriendway/onchain-handler/contracts/lptoken"
+	"github.com/genefriendway/onchain-handler/contracts/abigen/lifepointtoken"
 	util "github.com/genefriendway/onchain-handler/internal/utils/ethereum"
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
@@ -32,7 +32,7 @@ func DistributeReward(client *ethclient.Client, config *conf.Configuration, reci
 	}
 
 	// Set up the reward token contract instance
-	LPToken, err := lptoken.NewLptoken(common.HexToAddress(tokenAddress), client)
+	LPToken, err := lifepointtoken.NewLifepointtoken(common.HexToAddress(tokenAddress), client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to instantiate ERC20 contract: %w", err)
 	}

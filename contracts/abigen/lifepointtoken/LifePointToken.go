@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package lptoken
+package lifepointtoken
 
 import (
 	"errors"
@@ -29,113 +29,113 @@ var (
 	_ = abi.ConvertType
 )
 
-// LptokenMetaData contains all meta data concerning the Lptoken contract.
-var LptokenMetaData = &bind.MetaData{
+// LifepointtokenMetaData contains all meta data concerning the Lifepointtoken contract.
+var LifepointtokenMetaData = &bind.MetaData{
 	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"totalAmount\",\"type\":\"uint256\"}],\"name\":\"BulkTransfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_to\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_value\",\"type\":\"uint256[]\"}],\"name\":\"bulkTransfer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"subtractedValue\",\"type\":\"uint256\"}],\"name\":\"decreaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"addedValue\",\"type\":\"uint256\"}],\"name\":\"increaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
-// LptokenABI is the input ABI used to generate the binding from.
-// Deprecated: Use LptokenMetaData.ABI instead.
-var LptokenABI = LptokenMetaData.ABI
+// LifepointtokenABI is the input ABI used to generate the binding from.
+// Deprecated: Use LifepointtokenMetaData.ABI instead.
+var LifepointtokenABI = LifepointtokenMetaData.ABI
 
-// Lptoken is an auto generated Go binding around an Ethereum contract.
-type Lptoken struct {
-	LptokenCaller     // Read-only binding to the contract
-	LptokenTransactor // Write-only binding to the contract
-	LptokenFilterer   // Log filterer for contract events
+// Lifepointtoken is an auto generated Go binding around an Ethereum contract.
+type Lifepointtoken struct {
+	LifepointtokenCaller     // Read-only binding to the contract
+	LifepointtokenTransactor // Write-only binding to the contract
+	LifepointtokenFilterer   // Log filterer for contract events
 }
 
-// LptokenCaller is an auto generated read-only Go binding around an Ethereum contract.
-type LptokenCaller struct {
+// LifepointtokenCaller is an auto generated read-only Go binding around an Ethereum contract.
+type LifepointtokenCaller struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// LptokenTransactor is an auto generated write-only Go binding around an Ethereum contract.
-type LptokenTransactor struct {
+// LifepointtokenTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type LifepointtokenTransactor struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// LptokenFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
-type LptokenFilterer struct {
+// LifepointtokenFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type LifepointtokenFilterer struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// LptokenSession is an auto generated Go binding around an Ethereum contract,
+// LifepointtokenSession is an auto generated Go binding around an Ethereum contract,
 // with pre-set call and transact options.
-type LptokenSession struct {
-	Contract     *Lptoken          // Generic contract binding to set the session for
+type LifepointtokenSession struct {
+	Contract     *Lifepointtoken   // Generic contract binding to set the session for
 	CallOpts     bind.CallOpts     // Call options to use throughout this session
 	TransactOpts bind.TransactOpts // Transaction auth options to use throughout this session
 }
 
-// LptokenCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// LifepointtokenCallerSession is an auto generated read-only Go binding around an Ethereum contract,
 // with pre-set call options.
-type LptokenCallerSession struct {
-	Contract *LptokenCaller // Generic contract caller binding to set the session for
-	CallOpts bind.CallOpts  // Call options to use throughout this session
+type LifepointtokenCallerSession struct {
+	Contract *LifepointtokenCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts         // Call options to use throughout this session
 }
 
-// LptokenTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// LifepointtokenTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
 // with pre-set transact options.
-type LptokenTransactorSession struct {
-	Contract     *LptokenTransactor // Generic contract transactor binding to set the session for
-	TransactOpts bind.TransactOpts  // Transaction auth options to use throughout this session
+type LifepointtokenTransactorSession struct {
+	Contract     *LifepointtokenTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts         // Transaction auth options to use throughout this session
 }
 
-// LptokenRaw is an auto generated low-level Go binding around an Ethereum contract.
-type LptokenRaw struct {
-	Contract *Lptoken // Generic contract binding to access the raw methods on
+// LifepointtokenRaw is an auto generated low-level Go binding around an Ethereum contract.
+type LifepointtokenRaw struct {
+	Contract *Lifepointtoken // Generic contract binding to access the raw methods on
 }
 
-// LptokenCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
-type LptokenCallerRaw struct {
-	Contract *LptokenCaller // Generic read-only contract binding to access the raw methods on
+// LifepointtokenCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type LifepointtokenCallerRaw struct {
+	Contract *LifepointtokenCaller // Generic read-only contract binding to access the raw methods on
 }
 
-// LptokenTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
-type LptokenTransactorRaw struct {
-	Contract *LptokenTransactor // Generic write-only contract binding to access the raw methods on
+// LifepointtokenTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type LifepointtokenTransactorRaw struct {
+	Contract *LifepointtokenTransactor // Generic write-only contract binding to access the raw methods on
 }
 
-// NewLptoken creates a new instance of Lptoken, bound to a specific deployed contract.
-func NewLptoken(address common.Address, backend bind.ContractBackend) (*Lptoken, error) {
-	contract, err := bindLptoken(address, backend, backend, backend)
+// NewLifepointtoken creates a new instance of Lifepointtoken, bound to a specific deployed contract.
+func NewLifepointtoken(address common.Address, backend bind.ContractBackend) (*Lifepointtoken, error) {
+	contract, err := bindLifepointtoken(address, backend, backend, backend)
 	if err != nil {
 		return nil, err
 	}
-	return &Lptoken{LptokenCaller: LptokenCaller{contract: contract}, LptokenTransactor: LptokenTransactor{contract: contract}, LptokenFilterer: LptokenFilterer{contract: contract}}, nil
+	return &Lifepointtoken{LifepointtokenCaller: LifepointtokenCaller{contract: contract}, LifepointtokenTransactor: LifepointtokenTransactor{contract: contract}, LifepointtokenFilterer: LifepointtokenFilterer{contract: contract}}, nil
 }
 
-// NewLptokenCaller creates a new read-only instance of Lptoken, bound to a specific deployed contract.
-func NewLptokenCaller(address common.Address, caller bind.ContractCaller) (*LptokenCaller, error) {
-	contract, err := bindLptoken(address, caller, nil, nil)
+// NewLifepointtokenCaller creates a new read-only instance of Lifepointtoken, bound to a specific deployed contract.
+func NewLifepointtokenCaller(address common.Address, caller bind.ContractCaller) (*LifepointtokenCaller, error) {
+	contract, err := bindLifepointtoken(address, caller, nil, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenCaller{contract: contract}, nil
+	return &LifepointtokenCaller{contract: contract}, nil
 }
 
-// NewLptokenTransactor creates a new write-only instance of Lptoken, bound to a specific deployed contract.
-func NewLptokenTransactor(address common.Address, transactor bind.ContractTransactor) (*LptokenTransactor, error) {
-	contract, err := bindLptoken(address, nil, transactor, nil)
+// NewLifepointtokenTransactor creates a new write-only instance of Lifepointtoken, bound to a specific deployed contract.
+func NewLifepointtokenTransactor(address common.Address, transactor bind.ContractTransactor) (*LifepointtokenTransactor, error) {
+	contract, err := bindLifepointtoken(address, nil, transactor, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenTransactor{contract: contract}, nil
+	return &LifepointtokenTransactor{contract: contract}, nil
 }
 
-// NewLptokenFilterer creates a new log filterer instance of Lptoken, bound to a specific deployed contract.
-func NewLptokenFilterer(address common.Address, filterer bind.ContractFilterer) (*LptokenFilterer, error) {
-	contract, err := bindLptoken(address, nil, nil, filterer)
+// NewLifepointtokenFilterer creates a new log filterer instance of Lifepointtoken, bound to a specific deployed contract.
+func NewLifepointtokenFilterer(address common.Address, filterer bind.ContractFilterer) (*LifepointtokenFilterer, error) {
+	contract, err := bindLifepointtoken(address, nil, nil, filterer)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenFilterer{contract: contract}, nil
+	return &LifepointtokenFilterer{contract: contract}, nil
 }
 
-// bindLptoken binds a generic wrapper to an already deployed contract.
-func bindLptoken(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := LptokenMetaData.GetAbi()
+// bindLifepointtoken binds a generic wrapper to an already deployed contract.
+func bindLifepointtoken(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := LifepointtokenMetaData.GetAbi()
 	if err != nil {
 		return nil, err
 	}
@@ -146,46 +146,46 @@ func bindLptoken(address common.Address, caller bind.ContractCaller, transactor 
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_Lptoken *LptokenRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _Lptoken.Contract.LptokenCaller.contract.Call(opts, result, method, params...)
+func (_Lifepointtoken *LifepointtokenRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+	return _Lifepointtoken.Contract.LifepointtokenCaller.contract.Call(opts, result, method, params...)
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
-func (_Lptoken *LptokenRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Lptoken.Contract.LptokenTransactor.contract.Transfer(opts)
+func (_Lifepointtoken *LifepointtokenRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.LifepointtokenTransactor.contract.Transfer(opts)
 }
 
 // Transact invokes the (paid) contract method with params as input values.
-func (_Lptoken *LptokenRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _Lptoken.Contract.LptokenTransactor.contract.Transact(opts, method, params...)
+func (_Lifepointtoken *LifepointtokenRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.LifepointtokenTransactor.contract.Transact(opts, method, params...)
 }
 
 // Call invokes the (constant) contract method with params as input values and
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_Lptoken *LptokenCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _Lptoken.Contract.contract.Call(opts, result, method, params...)
+func (_Lifepointtoken *LifepointtokenCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+	return _Lifepointtoken.Contract.contract.Call(opts, result, method, params...)
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
-func (_Lptoken *LptokenTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Lptoken.Contract.contract.Transfer(opts)
+func (_Lifepointtoken *LifepointtokenTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.contract.Transfer(opts)
 }
 
 // Transact invokes the (paid) contract method with params as input values.
-func (_Lptoken *LptokenTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _Lptoken.Contract.contract.Transact(opts, method, params...)
+func (_Lifepointtoken *LifepointtokenTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.contract.Transact(opts, method, params...)
 }
 
 // Allowance is a free data retrieval call binding the contract method 0xdd62ed3e.
 //
 // Solidity: function allowance(address owner, address spender) view returns(uint256)
-func (_Lptoken *LptokenCaller) Allowance(opts *bind.CallOpts, owner common.Address, spender common.Address) (*big.Int, error) {
+func (_Lifepointtoken *LifepointtokenCaller) Allowance(opts *bind.CallOpts, owner common.Address, spender common.Address) (*big.Int, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "allowance", owner, spender)
+	err := _Lifepointtoken.contract.Call(opts, &out, "allowance", owner, spender)
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -200,23 +200,23 @@ func (_Lptoken *LptokenCaller) Allowance(opts *bind.CallOpts, owner common.Addre
 // Allowance is a free data retrieval call binding the contract method 0xdd62ed3e.
 //
 // Solidity: function allowance(address owner, address spender) view returns(uint256)
-func (_Lptoken *LptokenSession) Allowance(owner common.Address, spender common.Address) (*big.Int, error) {
-	return _Lptoken.Contract.Allowance(&_Lptoken.CallOpts, owner, spender)
+func (_Lifepointtoken *LifepointtokenSession) Allowance(owner common.Address, spender common.Address) (*big.Int, error) {
+	return _Lifepointtoken.Contract.Allowance(&_Lifepointtoken.CallOpts, owner, spender)
 }
 
 // Allowance is a free data retrieval call binding the contract method 0xdd62ed3e.
 //
 // Solidity: function allowance(address owner, address spender) view returns(uint256)
-func (_Lptoken *LptokenCallerSession) Allowance(owner common.Address, spender common.Address) (*big.Int, error) {
-	return _Lptoken.Contract.Allowance(&_Lptoken.CallOpts, owner, spender)
+func (_Lifepointtoken *LifepointtokenCallerSession) Allowance(owner common.Address, spender common.Address) (*big.Int, error) {
+	return _Lifepointtoken.Contract.Allowance(&_Lifepointtoken.CallOpts, owner, spender)
 }
 
 // BalanceOf is a free data retrieval call binding the contract method 0x70a08231.
 //
 // Solidity: function balanceOf(address account) view returns(uint256)
-func (_Lptoken *LptokenCaller) BalanceOf(opts *bind.CallOpts, account common.Address) (*big.Int, error) {
+func (_Lifepointtoken *LifepointtokenCaller) BalanceOf(opts *bind.CallOpts, account common.Address) (*big.Int, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "balanceOf", account)
+	err := _Lifepointtoken.contract.Call(opts, &out, "balanceOf", account)
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -231,23 +231,23 @@ func (_Lptoken *LptokenCaller) BalanceOf(opts *bind.CallOpts, account common.Add
 // BalanceOf is a free data retrieval call binding the contract method 0x70a08231.
 //
 // Solidity: function balanceOf(address account) view returns(uint256)
-func (_Lptoken *LptokenSession) BalanceOf(account common.Address) (*big.Int, error) {
-	return _Lptoken.Contract.BalanceOf(&_Lptoken.CallOpts, account)
+func (_Lifepointtoken *LifepointtokenSession) BalanceOf(account common.Address) (*big.Int, error) {
+	return _Lifepointtoken.Contract.BalanceOf(&_Lifepointtoken.CallOpts, account)
 }
 
 // BalanceOf is a free data retrieval call binding the contract method 0x70a08231.
 //
 // Solidity: function balanceOf(address account) view returns(uint256)
-func (_Lptoken *LptokenCallerSession) BalanceOf(account common.Address) (*big.Int, error) {
-	return _Lptoken.Contract.BalanceOf(&_Lptoken.CallOpts, account)
+func (_Lifepointtoken *LifepointtokenCallerSession) BalanceOf(account common.Address) (*big.Int, error) {
+	return _Lifepointtoken.Contract.BalanceOf(&_Lifepointtoken.CallOpts, account)
 }
 
 // Decimals is a free data retrieval call binding the contract method 0x313ce567.
 //
 // Solidity: function decimals() view returns(uint8)
-func (_Lptoken *LptokenCaller) Decimals(opts *bind.CallOpts) (uint8, error) {
+func (_Lifepointtoken *LifepointtokenCaller) Decimals(opts *bind.CallOpts) (uint8, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "decimals")
+	err := _Lifepointtoken.contract.Call(opts, &out, "decimals")
 
 	if err != nil {
 		return *new(uint8), err
@@ -262,23 +262,23 @@ func (_Lptoken *LptokenCaller) Decimals(opts *bind.CallOpts) (uint8, error) {
 // Decimals is a free data retrieval call binding the contract method 0x313ce567.
 //
 // Solidity: function decimals() view returns(uint8)
-func (_Lptoken *LptokenSession) Decimals() (uint8, error) {
-	return _Lptoken.Contract.Decimals(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenSession) Decimals() (uint8, error) {
+	return _Lifepointtoken.Contract.Decimals(&_Lifepointtoken.CallOpts)
 }
 
 // Decimals is a free data retrieval call binding the contract method 0x313ce567.
 //
 // Solidity: function decimals() view returns(uint8)
-func (_Lptoken *LptokenCallerSession) Decimals() (uint8, error) {
-	return _Lptoken.Contract.Decimals(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenCallerSession) Decimals() (uint8, error) {
+	return _Lifepointtoken.Contract.Decimals(&_Lifepointtoken.CallOpts)
 }
 
 // Name is a free data retrieval call binding the contract method 0x06fdde03.
 //
 // Solidity: function name() view returns(string)
-func (_Lptoken *LptokenCaller) Name(opts *bind.CallOpts) (string, error) {
+func (_Lifepointtoken *LifepointtokenCaller) Name(opts *bind.CallOpts) (string, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "name")
+	err := _Lifepointtoken.contract.Call(opts, &out, "name")
 
 	if err != nil {
 		return *new(string), err
@@ -293,23 +293,23 @@ func (_Lptoken *LptokenCaller) Name(opts *bind.CallOpts) (string, error) {
 // Name is a free data retrieval call binding the contract method 0x06fdde03.
 //
 // Solidity: function name() view returns(string)
-func (_Lptoken *LptokenSession) Name() (string, error) {
-	return _Lptoken.Contract.Name(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenSession) Name() (string, error) {
+	return _Lifepointtoken.Contract.Name(&_Lifepointtoken.CallOpts)
 }
 
 // Name is a free data retrieval call binding the contract method 0x06fdde03.
 //
 // Solidity: function name() view returns(string)
-func (_Lptoken *LptokenCallerSession) Name() (string, error) {
-	return _Lptoken.Contract.Name(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenCallerSession) Name() (string, error) {
+	return _Lifepointtoken.Contract.Name(&_Lifepointtoken.CallOpts)
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Lptoken *LptokenCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
+func (_Lifepointtoken *LifepointtokenCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "owner")
+	err := _Lifepointtoken.contract.Call(opts, &out, "owner")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -324,23 +324,23 @@ func (_Lptoken *LptokenCaller) Owner(opts *bind.CallOpts) (common.Address, error
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Lptoken *LptokenSession) Owner() (common.Address, error) {
-	return _Lptoken.Contract.Owner(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenSession) Owner() (common.Address, error) {
+	return _Lifepointtoken.Contract.Owner(&_Lifepointtoken.CallOpts)
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Lptoken *LptokenCallerSession) Owner() (common.Address, error) {
-	return _Lptoken.Contract.Owner(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenCallerSession) Owner() (common.Address, error) {
+	return _Lifepointtoken.Contract.Owner(&_Lifepointtoken.CallOpts)
 }
 
 // Symbol is a free data retrieval call binding the contract method 0x95d89b41.
 //
 // Solidity: function symbol() view returns(string)
-func (_Lptoken *LptokenCaller) Symbol(opts *bind.CallOpts) (string, error) {
+func (_Lifepointtoken *LifepointtokenCaller) Symbol(opts *bind.CallOpts) (string, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "symbol")
+	err := _Lifepointtoken.contract.Call(opts, &out, "symbol")
 
 	if err != nil {
 		return *new(string), err
@@ -355,23 +355,23 @@ func (_Lptoken *LptokenCaller) Symbol(opts *bind.CallOpts) (string, error) {
 // Symbol is a free data retrieval call binding the contract method 0x95d89b41.
 //
 // Solidity: function symbol() view returns(string)
-func (_Lptoken *LptokenSession) Symbol() (string, error) {
-	return _Lptoken.Contract.Symbol(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenSession) Symbol() (string, error) {
+	return _Lifepointtoken.Contract.Symbol(&_Lifepointtoken.CallOpts)
 }
 
 // Symbol is a free data retrieval call binding the contract method 0x95d89b41.
 //
 // Solidity: function symbol() view returns(string)
-func (_Lptoken *LptokenCallerSession) Symbol() (string, error) {
-	return _Lptoken.Contract.Symbol(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenCallerSession) Symbol() (string, error) {
+	return _Lifepointtoken.Contract.Symbol(&_Lifepointtoken.CallOpts)
 }
 
 // TotalSupply is a free data retrieval call binding the contract method 0x18160ddd.
 //
 // Solidity: function totalSupply() view returns(uint256)
-func (_Lptoken *LptokenCaller) TotalSupply(opts *bind.CallOpts) (*big.Int, error) {
+func (_Lifepointtoken *LifepointtokenCaller) TotalSupply(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Lptoken.contract.Call(opts, &out, "totalSupply")
+	err := _Lifepointtoken.contract.Call(opts, &out, "totalSupply")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -386,209 +386,209 @@ func (_Lptoken *LptokenCaller) TotalSupply(opts *bind.CallOpts) (*big.Int, error
 // TotalSupply is a free data retrieval call binding the contract method 0x18160ddd.
 //
 // Solidity: function totalSupply() view returns(uint256)
-func (_Lptoken *LptokenSession) TotalSupply() (*big.Int, error) {
-	return _Lptoken.Contract.TotalSupply(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenSession) TotalSupply() (*big.Int, error) {
+	return _Lifepointtoken.Contract.TotalSupply(&_Lifepointtoken.CallOpts)
 }
 
 // TotalSupply is a free data retrieval call binding the contract method 0x18160ddd.
 //
 // Solidity: function totalSupply() view returns(uint256)
-func (_Lptoken *LptokenCallerSession) TotalSupply() (*big.Int, error) {
-	return _Lptoken.Contract.TotalSupply(&_Lptoken.CallOpts)
+func (_Lifepointtoken *LifepointtokenCallerSession) TotalSupply() (*big.Int, error) {
+	return _Lifepointtoken.Contract.TotalSupply(&_Lifepointtoken.CallOpts)
 }
 
 // Approve is a paid mutator transaction binding the contract method 0x095ea7b3.
 //
 // Solidity: function approve(address spender, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactor) Approve(opts *bind.TransactOpts, spender common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "approve", spender, amount)
+func (_Lifepointtoken *LifepointtokenTransactor) Approve(opts *bind.TransactOpts, spender common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "approve", spender, amount)
 }
 
 // Approve is a paid mutator transaction binding the contract method 0x095ea7b3.
 //
 // Solidity: function approve(address spender, uint256 amount) returns(bool)
-func (_Lptoken *LptokenSession) Approve(spender common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Approve(&_Lptoken.TransactOpts, spender, amount)
+func (_Lifepointtoken *LifepointtokenSession) Approve(spender common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Approve(&_Lifepointtoken.TransactOpts, spender, amount)
 }
 
 // Approve is a paid mutator transaction binding the contract method 0x095ea7b3.
 //
 // Solidity: function approve(address spender, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactorSession) Approve(spender common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Approve(&_Lptoken.TransactOpts, spender, amount)
+func (_Lifepointtoken *LifepointtokenTransactorSession) Approve(spender common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Approve(&_Lifepointtoken.TransactOpts, spender, amount)
 }
 
 // BulkTransfer is a paid mutator transaction binding the contract method 0x153a1f3e.
 //
 // Solidity: function bulkTransfer(address[] _to, uint256[] _value) returns()
-func (_Lptoken *LptokenTransactor) BulkTransfer(opts *bind.TransactOpts, _to []common.Address, _value []*big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "bulkTransfer", _to, _value)
+func (_Lifepointtoken *LifepointtokenTransactor) BulkTransfer(opts *bind.TransactOpts, _to []common.Address, _value []*big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "bulkTransfer", _to, _value)
 }
 
 // BulkTransfer is a paid mutator transaction binding the contract method 0x153a1f3e.
 //
 // Solidity: function bulkTransfer(address[] _to, uint256[] _value) returns()
-func (_Lptoken *LptokenSession) BulkTransfer(_to []common.Address, _value []*big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.BulkTransfer(&_Lptoken.TransactOpts, _to, _value)
+func (_Lifepointtoken *LifepointtokenSession) BulkTransfer(_to []common.Address, _value []*big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.BulkTransfer(&_Lifepointtoken.TransactOpts, _to, _value)
 }
 
 // BulkTransfer is a paid mutator transaction binding the contract method 0x153a1f3e.
 //
 // Solidity: function bulkTransfer(address[] _to, uint256[] _value) returns()
-func (_Lptoken *LptokenTransactorSession) BulkTransfer(_to []common.Address, _value []*big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.BulkTransfer(&_Lptoken.TransactOpts, _to, _value)
+func (_Lifepointtoken *LifepointtokenTransactorSession) BulkTransfer(_to []common.Address, _value []*big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.BulkTransfer(&_Lifepointtoken.TransactOpts, _to, _value)
 }
 
 // DecreaseAllowance is a paid mutator transaction binding the contract method 0xa457c2d7.
 //
 // Solidity: function decreaseAllowance(address spender, uint256 subtractedValue) returns(bool)
-func (_Lptoken *LptokenTransactor) DecreaseAllowance(opts *bind.TransactOpts, spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "decreaseAllowance", spender, subtractedValue)
+func (_Lifepointtoken *LifepointtokenTransactor) DecreaseAllowance(opts *bind.TransactOpts, spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "decreaseAllowance", spender, subtractedValue)
 }
 
 // DecreaseAllowance is a paid mutator transaction binding the contract method 0xa457c2d7.
 //
 // Solidity: function decreaseAllowance(address spender, uint256 subtractedValue) returns(bool)
-func (_Lptoken *LptokenSession) DecreaseAllowance(spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.DecreaseAllowance(&_Lptoken.TransactOpts, spender, subtractedValue)
+func (_Lifepointtoken *LifepointtokenSession) DecreaseAllowance(spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.DecreaseAllowance(&_Lifepointtoken.TransactOpts, spender, subtractedValue)
 }
 
 // DecreaseAllowance is a paid mutator transaction binding the contract method 0xa457c2d7.
 //
 // Solidity: function decreaseAllowance(address spender, uint256 subtractedValue) returns(bool)
-func (_Lptoken *LptokenTransactorSession) DecreaseAllowance(spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.DecreaseAllowance(&_Lptoken.TransactOpts, spender, subtractedValue)
+func (_Lifepointtoken *LifepointtokenTransactorSession) DecreaseAllowance(spender common.Address, subtractedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.DecreaseAllowance(&_Lifepointtoken.TransactOpts, spender, subtractedValue)
 }
 
 // IncreaseAllowance is a paid mutator transaction binding the contract method 0x39509351.
 //
 // Solidity: function increaseAllowance(address spender, uint256 addedValue) returns(bool)
-func (_Lptoken *LptokenTransactor) IncreaseAllowance(opts *bind.TransactOpts, spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "increaseAllowance", spender, addedValue)
+func (_Lifepointtoken *LifepointtokenTransactor) IncreaseAllowance(opts *bind.TransactOpts, spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "increaseAllowance", spender, addedValue)
 }
 
 // IncreaseAllowance is a paid mutator transaction binding the contract method 0x39509351.
 //
 // Solidity: function increaseAllowance(address spender, uint256 addedValue) returns(bool)
-func (_Lptoken *LptokenSession) IncreaseAllowance(spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.IncreaseAllowance(&_Lptoken.TransactOpts, spender, addedValue)
+func (_Lifepointtoken *LifepointtokenSession) IncreaseAllowance(spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.IncreaseAllowance(&_Lifepointtoken.TransactOpts, spender, addedValue)
 }
 
 // IncreaseAllowance is a paid mutator transaction binding the contract method 0x39509351.
 //
 // Solidity: function increaseAllowance(address spender, uint256 addedValue) returns(bool)
-func (_Lptoken *LptokenTransactorSession) IncreaseAllowance(spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.IncreaseAllowance(&_Lptoken.TransactOpts, spender, addedValue)
+func (_Lifepointtoken *LifepointtokenTransactorSession) IncreaseAllowance(spender common.Address, addedValue *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.IncreaseAllowance(&_Lifepointtoken.TransactOpts, spender, addedValue)
 }
 
 // Mint is a paid mutator transaction binding the contract method 0x40c10f19.
 //
 // Solidity: function mint(address to, uint256 amount) returns()
-func (_Lptoken *LptokenTransactor) Mint(opts *bind.TransactOpts, to common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "mint", to, amount)
+func (_Lifepointtoken *LifepointtokenTransactor) Mint(opts *bind.TransactOpts, to common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "mint", to, amount)
 }
 
 // Mint is a paid mutator transaction binding the contract method 0x40c10f19.
 //
 // Solidity: function mint(address to, uint256 amount) returns()
-func (_Lptoken *LptokenSession) Mint(to common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Mint(&_Lptoken.TransactOpts, to, amount)
+func (_Lifepointtoken *LifepointtokenSession) Mint(to common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Mint(&_Lifepointtoken.TransactOpts, to, amount)
 }
 
 // Mint is a paid mutator transaction binding the contract method 0x40c10f19.
 //
 // Solidity: function mint(address to, uint256 amount) returns()
-func (_Lptoken *LptokenTransactorSession) Mint(to common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Mint(&_Lptoken.TransactOpts, to, amount)
+func (_Lifepointtoken *LifepointtokenTransactorSession) Mint(to common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Mint(&_Lifepointtoken.TransactOpts, to, amount)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
 //
 // Solidity: function renounceOwnership() returns()
-func (_Lptoken *LptokenTransactor) RenounceOwnership(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "renounceOwnership")
+func (_Lifepointtoken *LifepointtokenTransactor) RenounceOwnership(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "renounceOwnership")
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
 //
 // Solidity: function renounceOwnership() returns()
-func (_Lptoken *LptokenSession) RenounceOwnership() (*types.Transaction, error) {
-	return _Lptoken.Contract.RenounceOwnership(&_Lptoken.TransactOpts)
+func (_Lifepointtoken *LifepointtokenSession) RenounceOwnership() (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.RenounceOwnership(&_Lifepointtoken.TransactOpts)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
 //
 // Solidity: function renounceOwnership() returns()
-func (_Lptoken *LptokenTransactorSession) RenounceOwnership() (*types.Transaction, error) {
-	return _Lptoken.Contract.RenounceOwnership(&_Lptoken.TransactOpts)
+func (_Lifepointtoken *LifepointtokenTransactorSession) RenounceOwnership() (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.RenounceOwnership(&_Lifepointtoken.TransactOpts)
 }
 
 // Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
 //
 // Solidity: function transfer(address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactor) Transfer(opts *bind.TransactOpts, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "transfer", recipient, amount)
+func (_Lifepointtoken *LifepointtokenTransactor) Transfer(opts *bind.TransactOpts, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "transfer", recipient, amount)
 }
 
 // Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
 //
 // Solidity: function transfer(address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenSession) Transfer(recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Transfer(&_Lptoken.TransactOpts, recipient, amount)
+func (_Lifepointtoken *LifepointtokenSession) Transfer(recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Transfer(&_Lifepointtoken.TransactOpts, recipient, amount)
 }
 
 // Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
 //
 // Solidity: function transfer(address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactorSession) Transfer(recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.Transfer(&_Lptoken.TransactOpts, recipient, amount)
+func (_Lifepointtoken *LifepointtokenTransactorSession) Transfer(recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.Transfer(&_Lifepointtoken.TransactOpts, recipient, amount)
 }
 
 // TransferFrom is a paid mutator transaction binding the contract method 0x23b872dd.
 //
 // Solidity: function transferFrom(address sender, address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactor) TransferFrom(opts *bind.TransactOpts, sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "transferFrom", sender, recipient, amount)
+func (_Lifepointtoken *LifepointtokenTransactor) TransferFrom(opts *bind.TransactOpts, sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "transferFrom", sender, recipient, amount)
 }
 
 // TransferFrom is a paid mutator transaction binding the contract method 0x23b872dd.
 //
 // Solidity: function transferFrom(address sender, address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenSession) TransferFrom(sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.TransferFrom(&_Lptoken.TransactOpts, sender, recipient, amount)
+func (_Lifepointtoken *LifepointtokenSession) TransferFrom(sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.TransferFrom(&_Lifepointtoken.TransactOpts, sender, recipient, amount)
 }
 
 // TransferFrom is a paid mutator transaction binding the contract method 0x23b872dd.
 //
 // Solidity: function transferFrom(address sender, address recipient, uint256 amount) returns(bool)
-func (_Lptoken *LptokenTransactorSession) TransferFrom(sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _Lptoken.Contract.TransferFrom(&_Lptoken.TransactOpts, sender, recipient, amount)
+func (_Lifepointtoken *LifepointtokenTransactorSession) TransferFrom(sender common.Address, recipient common.Address, amount *big.Int) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.TransferFrom(&_Lifepointtoken.TransactOpts, sender, recipient, amount)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Lptoken *LptokenTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
-	return _Lptoken.contract.Transact(opts, "transferOwnership", newOwner)
+func (_Lifepointtoken *LifepointtokenTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
+	return _Lifepointtoken.contract.Transact(opts, "transferOwnership", newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Lptoken *LptokenSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _Lptoken.Contract.TransferOwnership(&_Lptoken.TransactOpts, newOwner)
+func (_Lifepointtoken *LifepointtokenSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.TransferOwnership(&_Lifepointtoken.TransactOpts, newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Lptoken *LptokenTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _Lptoken.Contract.TransferOwnership(&_Lptoken.TransactOpts, newOwner)
+func (_Lifepointtoken *LifepointtokenTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
+	return _Lifepointtoken.Contract.TransferOwnership(&_Lifepointtoken.TransactOpts, newOwner)
 }
 
-// LptokenApprovalIterator is returned from FilterApproval and is used to iterate over the raw logs and unpacked data for Approval events raised by the Lptoken contract.
-type LptokenApprovalIterator struct {
-	Event *LptokenApproval // Event containing the contract specifics and raw log
+// LifepointtokenApprovalIterator is returned from FilterApproval and is used to iterate over the raw logs and unpacked data for Approval events raised by the Lifepointtoken contract.
+type LifepointtokenApprovalIterator struct {
+	Event *LifepointtokenApproval // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -602,7 +602,7 @@ type LptokenApprovalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *LptokenApprovalIterator) Next() bool {
+func (it *LifepointtokenApprovalIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -611,7 +611,7 @@ func (it *LptokenApprovalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(LptokenApproval)
+			it.Event = new(LifepointtokenApproval)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -626,7 +626,7 @@ func (it *LptokenApprovalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(LptokenApproval)
+		it.Event = new(LifepointtokenApproval)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -642,19 +642,19 @@ func (it *LptokenApprovalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *LptokenApprovalIterator) Error() error {
+func (it *LifepointtokenApprovalIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *LptokenApprovalIterator) Close() error {
+func (it *LifepointtokenApprovalIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// LptokenApproval represents a Approval event raised by the Lptoken contract.
-type LptokenApproval struct {
+// LifepointtokenApproval represents a Approval event raised by the Lifepointtoken contract.
+type LifepointtokenApproval struct {
 	Owner   common.Address
 	Spender common.Address
 	Value   *big.Int
@@ -664,7 +664,7 @@ type LptokenApproval struct {
 // FilterApproval is a free log retrieval operation binding the contract event 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925.
 //
 // Solidity: event Approval(address indexed owner, address indexed spender, uint256 value)
-func (_Lptoken *LptokenFilterer) FilterApproval(opts *bind.FilterOpts, owner []common.Address, spender []common.Address) (*LptokenApprovalIterator, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) FilterApproval(opts *bind.FilterOpts, owner []common.Address, spender []common.Address) (*LifepointtokenApprovalIterator, error) {
 
 	var ownerRule []interface{}
 	for _, ownerItem := range owner {
@@ -675,17 +675,17 @@ func (_Lptoken *LptokenFilterer) FilterApproval(opts *bind.FilterOpts, owner []c
 		spenderRule = append(spenderRule, spenderItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.FilterLogs(opts, "Approval", ownerRule, spenderRule)
+	logs, sub, err := _Lifepointtoken.contract.FilterLogs(opts, "Approval", ownerRule, spenderRule)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenApprovalIterator{contract: _Lptoken.contract, event: "Approval", logs: logs, sub: sub}, nil
+	return &LifepointtokenApprovalIterator{contract: _Lifepointtoken.contract, event: "Approval", logs: logs, sub: sub}, nil
 }
 
 // WatchApproval is a free log subscription operation binding the contract event 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925.
 //
 // Solidity: event Approval(address indexed owner, address indexed spender, uint256 value)
-func (_Lptoken *LptokenFilterer) WatchApproval(opts *bind.WatchOpts, sink chan<- *LptokenApproval, owner []common.Address, spender []common.Address) (event.Subscription, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) WatchApproval(opts *bind.WatchOpts, sink chan<- *LifepointtokenApproval, owner []common.Address, spender []common.Address) (event.Subscription, error) {
 
 	var ownerRule []interface{}
 	for _, ownerItem := range owner {
@@ -696,7 +696,7 @@ func (_Lptoken *LptokenFilterer) WatchApproval(opts *bind.WatchOpts, sink chan<-
 		spenderRule = append(spenderRule, spenderItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.WatchLogs(opts, "Approval", ownerRule, spenderRule)
+	logs, sub, err := _Lifepointtoken.contract.WatchLogs(opts, "Approval", ownerRule, spenderRule)
 	if err != nil {
 		return nil, err
 	}
@@ -706,8 +706,8 @@ func (_Lptoken *LptokenFilterer) WatchApproval(opts *bind.WatchOpts, sink chan<-
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(LptokenApproval)
-				if err := _Lptoken.contract.UnpackLog(event, "Approval", log); err != nil {
+				event := new(LifepointtokenApproval)
+				if err := _Lifepointtoken.contract.UnpackLog(event, "Approval", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -731,18 +731,18 @@ func (_Lptoken *LptokenFilterer) WatchApproval(opts *bind.WatchOpts, sink chan<-
 // ParseApproval is a log parse operation binding the contract event 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925.
 //
 // Solidity: event Approval(address indexed owner, address indexed spender, uint256 value)
-func (_Lptoken *LptokenFilterer) ParseApproval(log types.Log) (*LptokenApproval, error) {
-	event := new(LptokenApproval)
-	if err := _Lptoken.contract.UnpackLog(event, "Approval", log); err != nil {
+func (_Lifepointtoken *LifepointtokenFilterer) ParseApproval(log types.Log) (*LifepointtokenApproval, error) {
+	event := new(LifepointtokenApproval)
+	if err := _Lifepointtoken.contract.UnpackLog(event, "Approval", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// LptokenBulkTransferIterator is returned from FilterBulkTransfer and is used to iterate over the raw logs and unpacked data for BulkTransfer events raised by the Lptoken contract.
-type LptokenBulkTransferIterator struct {
-	Event *LptokenBulkTransfer // Event containing the contract specifics and raw log
+// LifepointtokenBulkTransferIterator is returned from FilterBulkTransfer and is used to iterate over the raw logs and unpacked data for BulkTransfer events raised by the Lifepointtoken contract.
+type LifepointtokenBulkTransferIterator struct {
+	Event *LifepointtokenBulkTransfer // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -756,7 +756,7 @@ type LptokenBulkTransferIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *LptokenBulkTransferIterator) Next() bool {
+func (it *LifepointtokenBulkTransferIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -765,7 +765,7 @@ func (it *LptokenBulkTransferIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(LptokenBulkTransfer)
+			it.Event = new(LifepointtokenBulkTransfer)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -780,7 +780,7 @@ func (it *LptokenBulkTransferIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(LptokenBulkTransfer)
+		it.Event = new(LifepointtokenBulkTransfer)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -796,19 +796,19 @@ func (it *LptokenBulkTransferIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *LptokenBulkTransferIterator) Error() error {
+func (it *LifepointtokenBulkTransferIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *LptokenBulkTransferIterator) Close() error {
+func (it *LifepointtokenBulkTransferIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// LptokenBulkTransfer represents a BulkTransfer event raised by the Lptoken contract.
-type LptokenBulkTransfer struct {
+// LifepointtokenBulkTransfer represents a BulkTransfer event raised by the Lifepointtoken contract.
+type LifepointtokenBulkTransfer struct {
 	Token       common.Address
 	TotalAmount *big.Int
 	Raw         types.Log // Blockchain specific contextual infos
@@ -817,31 +817,31 @@ type LptokenBulkTransfer struct {
 // FilterBulkTransfer is a free log retrieval operation binding the contract event 0x21f0d47b1fb5dbc8be145db4deb26c6217476813ca3bc738a0a3d83132546963.
 //
 // Solidity: event BulkTransfer(address indexed token, uint256 totalAmount)
-func (_Lptoken *LptokenFilterer) FilterBulkTransfer(opts *bind.FilterOpts, token []common.Address) (*LptokenBulkTransferIterator, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) FilterBulkTransfer(opts *bind.FilterOpts, token []common.Address) (*LifepointtokenBulkTransferIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
 		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.FilterLogs(opts, "BulkTransfer", tokenRule)
+	logs, sub, err := _Lifepointtoken.contract.FilterLogs(opts, "BulkTransfer", tokenRule)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenBulkTransferIterator{contract: _Lptoken.contract, event: "BulkTransfer", logs: logs, sub: sub}, nil
+	return &LifepointtokenBulkTransferIterator{contract: _Lifepointtoken.contract, event: "BulkTransfer", logs: logs, sub: sub}, nil
 }
 
 // WatchBulkTransfer is a free log subscription operation binding the contract event 0x21f0d47b1fb5dbc8be145db4deb26c6217476813ca3bc738a0a3d83132546963.
 //
 // Solidity: event BulkTransfer(address indexed token, uint256 totalAmount)
-func (_Lptoken *LptokenFilterer) WatchBulkTransfer(opts *bind.WatchOpts, sink chan<- *LptokenBulkTransfer, token []common.Address) (event.Subscription, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) WatchBulkTransfer(opts *bind.WatchOpts, sink chan<- *LifepointtokenBulkTransfer, token []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
 		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.WatchLogs(opts, "BulkTransfer", tokenRule)
+	logs, sub, err := _Lifepointtoken.contract.WatchLogs(opts, "BulkTransfer", tokenRule)
 	if err != nil {
 		return nil, err
 	}
@@ -851,8 +851,8 @@ func (_Lptoken *LptokenFilterer) WatchBulkTransfer(opts *bind.WatchOpts, sink ch
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(LptokenBulkTransfer)
-				if err := _Lptoken.contract.UnpackLog(event, "BulkTransfer", log); err != nil {
+				event := new(LifepointtokenBulkTransfer)
+				if err := _Lifepointtoken.contract.UnpackLog(event, "BulkTransfer", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -876,18 +876,18 @@ func (_Lptoken *LptokenFilterer) WatchBulkTransfer(opts *bind.WatchOpts, sink ch
 // ParseBulkTransfer is a log parse operation binding the contract event 0x21f0d47b1fb5dbc8be145db4deb26c6217476813ca3bc738a0a3d83132546963.
 //
 // Solidity: event BulkTransfer(address indexed token, uint256 totalAmount)
-func (_Lptoken *LptokenFilterer) ParseBulkTransfer(log types.Log) (*LptokenBulkTransfer, error) {
-	event := new(LptokenBulkTransfer)
-	if err := _Lptoken.contract.UnpackLog(event, "BulkTransfer", log); err != nil {
+func (_Lifepointtoken *LifepointtokenFilterer) ParseBulkTransfer(log types.Log) (*LifepointtokenBulkTransfer, error) {
+	event := new(LifepointtokenBulkTransfer)
+	if err := _Lifepointtoken.contract.UnpackLog(event, "BulkTransfer", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// LptokenOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the Lptoken contract.
-type LptokenOwnershipTransferredIterator struct {
-	Event *LptokenOwnershipTransferred // Event containing the contract specifics and raw log
+// LifepointtokenOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the Lifepointtoken contract.
+type LifepointtokenOwnershipTransferredIterator struct {
+	Event *LifepointtokenOwnershipTransferred // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -901,7 +901,7 @@ type LptokenOwnershipTransferredIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *LptokenOwnershipTransferredIterator) Next() bool {
+func (it *LifepointtokenOwnershipTransferredIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -910,7 +910,7 @@ func (it *LptokenOwnershipTransferredIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(LptokenOwnershipTransferred)
+			it.Event = new(LifepointtokenOwnershipTransferred)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -925,7 +925,7 @@ func (it *LptokenOwnershipTransferredIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(LptokenOwnershipTransferred)
+		it.Event = new(LifepointtokenOwnershipTransferred)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -941,19 +941,19 @@ func (it *LptokenOwnershipTransferredIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *LptokenOwnershipTransferredIterator) Error() error {
+func (it *LifepointtokenOwnershipTransferredIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *LptokenOwnershipTransferredIterator) Close() error {
+func (it *LifepointtokenOwnershipTransferredIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// LptokenOwnershipTransferred represents a OwnershipTransferred event raised by the Lptoken contract.
-type LptokenOwnershipTransferred struct {
+// LifepointtokenOwnershipTransferred represents a OwnershipTransferred event raised by the Lifepointtoken contract.
+type LifepointtokenOwnershipTransferred struct {
 	PreviousOwner common.Address
 	NewOwner      common.Address
 	Raw           types.Log // Blockchain specific contextual infos
@@ -962,7 +962,7 @@ type LptokenOwnershipTransferred struct {
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Lptoken *LptokenFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*LptokenOwnershipTransferredIterator, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*LifepointtokenOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
 	for _, previousOwnerItem := range previousOwner {
@@ -973,17 +973,17 @@ func (_Lptoken *LptokenFilterer) FilterOwnershipTransferred(opts *bind.FilterOpt
 		newOwnerRule = append(newOwnerRule, newOwnerItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _Lifepointtoken.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenOwnershipTransferredIterator{contract: _Lptoken.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
+	return &LifepointtokenOwnershipTransferredIterator{contract: _Lifepointtoken.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
 }
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Lptoken *LptokenFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *LptokenOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *LifepointtokenOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
 	for _, previousOwnerItem := range previousOwner {
@@ -994,7 +994,7 @@ func (_Lptoken *LptokenFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts,
 		newOwnerRule = append(newOwnerRule, newOwnerItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _Lifepointtoken.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1004,8 +1004,8 @@ func (_Lptoken *LptokenFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts,
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(LptokenOwnershipTransferred)
-				if err := _Lptoken.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+				event := new(LifepointtokenOwnershipTransferred)
+				if err := _Lifepointtoken.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1029,18 +1029,18 @@ func (_Lptoken *LptokenFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts,
 // ParseOwnershipTransferred is a log parse operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Lptoken *LptokenFilterer) ParseOwnershipTransferred(log types.Log) (*LptokenOwnershipTransferred, error) {
-	event := new(LptokenOwnershipTransferred)
-	if err := _Lptoken.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+func (_Lifepointtoken *LifepointtokenFilterer) ParseOwnershipTransferred(log types.Log) (*LifepointtokenOwnershipTransferred, error) {
+	event := new(LifepointtokenOwnershipTransferred)
+	if err := _Lifepointtoken.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// LptokenTransferIterator is returned from FilterTransfer and is used to iterate over the raw logs and unpacked data for Transfer events raised by the Lptoken contract.
-type LptokenTransferIterator struct {
-	Event *LptokenTransfer // Event containing the contract specifics and raw log
+// LifepointtokenTransferIterator is returned from FilterTransfer and is used to iterate over the raw logs and unpacked data for Transfer events raised by the Lifepointtoken contract.
+type LifepointtokenTransferIterator struct {
+	Event *LifepointtokenTransfer // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1054,7 +1054,7 @@ type LptokenTransferIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *LptokenTransferIterator) Next() bool {
+func (it *LifepointtokenTransferIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1063,7 +1063,7 @@ func (it *LptokenTransferIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(LptokenTransfer)
+			it.Event = new(LifepointtokenTransfer)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1078,7 +1078,7 @@ func (it *LptokenTransferIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(LptokenTransfer)
+		it.Event = new(LifepointtokenTransfer)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1094,19 +1094,19 @@ func (it *LptokenTransferIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *LptokenTransferIterator) Error() error {
+func (it *LifepointtokenTransferIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *LptokenTransferIterator) Close() error {
+func (it *LifepointtokenTransferIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// LptokenTransfer represents a Transfer event raised by the Lptoken contract.
-type LptokenTransfer struct {
+// LifepointtokenTransfer represents a Transfer event raised by the Lifepointtoken contract.
+type LifepointtokenTransfer struct {
 	From  common.Address
 	To    common.Address
 	Value *big.Int
@@ -1116,7 +1116,7 @@ type LptokenTransfer struct {
 // FilterTransfer is a free log retrieval operation binding the contract event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef.
 //
 // Solidity: event Transfer(address indexed from, address indexed to, uint256 value)
-func (_Lptoken *LptokenFilterer) FilterTransfer(opts *bind.FilterOpts, from []common.Address, to []common.Address) (*LptokenTransferIterator, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) FilterTransfer(opts *bind.FilterOpts, from []common.Address, to []common.Address) (*LifepointtokenTransferIterator, error) {
 
 	var fromRule []interface{}
 	for _, fromItem := range from {
@@ -1127,17 +1127,17 @@ func (_Lptoken *LptokenFilterer) FilterTransfer(opts *bind.FilterOpts, from []co
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.FilterLogs(opts, "Transfer", fromRule, toRule)
+	logs, sub, err := _Lifepointtoken.contract.FilterLogs(opts, "Transfer", fromRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &LptokenTransferIterator{contract: _Lptoken.contract, event: "Transfer", logs: logs, sub: sub}, nil
+	return &LifepointtokenTransferIterator{contract: _Lifepointtoken.contract, event: "Transfer", logs: logs, sub: sub}, nil
 }
 
 // WatchTransfer is a free log subscription operation binding the contract event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef.
 //
 // Solidity: event Transfer(address indexed from, address indexed to, uint256 value)
-func (_Lptoken *LptokenFilterer) WatchTransfer(opts *bind.WatchOpts, sink chan<- *LptokenTransfer, from []common.Address, to []common.Address) (event.Subscription, error) {
+func (_Lifepointtoken *LifepointtokenFilterer) WatchTransfer(opts *bind.WatchOpts, sink chan<- *LifepointtokenTransfer, from []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var fromRule []interface{}
 	for _, fromItem := range from {
@@ -1148,7 +1148,7 @@ func (_Lptoken *LptokenFilterer) WatchTransfer(opts *bind.WatchOpts, sink chan<-
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _Lptoken.contract.WatchLogs(opts, "Transfer", fromRule, toRule)
+	logs, sub, err := _Lifepointtoken.contract.WatchLogs(opts, "Transfer", fromRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1158,8 +1158,8 @@ func (_Lptoken *LptokenFilterer) WatchTransfer(opts *bind.WatchOpts, sink chan<-
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(LptokenTransfer)
-				if err := _Lptoken.contract.UnpackLog(event, "Transfer", log); err != nil {
+				event := new(LifepointtokenTransfer)
+				if err := _Lifepointtoken.contract.UnpackLog(event, "Transfer", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1183,9 +1183,9 @@ func (_Lptoken *LptokenFilterer) WatchTransfer(opts *bind.WatchOpts, sink chan<-
 // ParseTransfer is a log parse operation binding the contract event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef.
 //
 // Solidity: event Transfer(address indexed from, address indexed to, uint256 value)
-func (_Lptoken *LptokenFilterer) ParseTransfer(log types.Log) (*LptokenTransfer, error) {
-	event := new(LptokenTransfer)
-	if err := _Lptoken.contract.UnpackLog(event, "Transfer", log); err != nil {
+func (_Lifepointtoken *LifepointtokenFilterer) ParseTransfer(log types.Log) (*LifepointtokenTransfer, error) {
+	event := new(LifepointtokenTransfer)
+	if err := _Lifepointtoken.contract.UnpackLog(event, "Transfer", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
