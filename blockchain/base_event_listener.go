@@ -146,6 +146,7 @@ func (listener *BaseEventListener) listen(ctx context.Context, parseAndProcessFu
 
 // processEvents handles events from the event channel.
 func (listener *BaseEventListener) processEvents(ctx context.Context) {
+	log.LG.Info("Starting process events...")
 	for {
 		select {
 		case event := <-listener.EventChan:
