@@ -72,19 +72,6 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 
 	// Extract indexed fields (user address and order ID).
 	event.User = common.HexToAddress(vLog.Topics[1].Hex())
-	orderID, err := parseHexToUint64(vLog.Topics[2].Hex())
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse order ID: %w", err)
-	}
-
-	// Create event data.
-	eventData := &MembershipEventData{
-		User:     event.User,
-		Amount:   event.Amount,
-		OrderID:  orderID,
-		Duration: event.Duration,
-		TxHash:   vLog.TxHash.Hex(),
-	}
 
 	var endDuration time.Time
 	switch event.Duration {
@@ -97,12 +84,17 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 		return nil, fmt.Errorf("invalid duration value: %d", event.Duration)
 	}
 
+	orderID, err := parseHexToUint64(vLog.Topics[2].Hex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse order ID: %w", err)
+	}
+
 	eventModel := model.MembershipEvents{
 		UserAddress:     event.User.Hex(),
-		OrderID:         event.OrderID,
-		TransactionHash: eventData.TxHash,
-		Amount:          eventData.Amount.String(),
-		Status:          1, // Assuming 1 means a successful event, adjust accordingly
+		OrderID:         orderID,
+		TransactionHash: vLog.TxHash.Hex(),
+		Amount:          event.Amount.String(),
+		Status:          1,
 		EndDuration:     endDuration,
 		CreatedAt:       time.Now(),
 		UpdatedAt:       time.Now(),
@@ -113,6 +105,15 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 	if err != nil {
 		log.LG.Errorf("Failed to create membership event history for OrderID %d: %v", event.OrderID, err)
 		return nil, err
+	}
+
+	// Create event data.
+	eventData := &MembershipEventData{
+		User:     event.User,
+		Amount:   event.Amount,
+		OrderID:  orderID,
+		Duration: event.Duration,
+		TxHash:   vLog.TxHash.Hex(),
 	}
 
 	return eventData, nil

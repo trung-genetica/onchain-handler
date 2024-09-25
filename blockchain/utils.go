@@ -2,11 +2,12 @@ package blockchain
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/big"
 	"os"
-	"strconv"
+	"strings"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -65,16 +66,28 @@ func getLatestBlockNumber(ctx context.Context, client *ethclient.Client) (*big.I
 	return header.Number, nil
 }
 
-// parseHexToUint64 converts a hex string to uint64
+// parseHexToUint64 parses a hex string to uint64.
+// Handles hex strings that start with "0x" and ignores leading zeros.
 func parseHexToUint64(hexStr string) (uint64, error) {
-	// Strip the "0x" prefix if present
-	if len(hexStr) > 2 && hexStr[:2] == "0x" {
-		hexStr = hexStr[2:]
+	// Ensure the string is lowercase and remove the "0x" prefix if present.
+	hexStr = strings.TrimPrefix(strings.ToLower(hexStr), "0x")
+
+	// If the string is empty or all zeros, return 0.
+	if len(hexStr) == 0 || strings.TrimLeft(hexStr, "0") == "" {
+		return 0, nil
 	}
-	// Convert hex string to uint64
-	orderID, err := strconv.ParseUint(hexStr, 16, 64)
+
+	// Decode the hex string into bytes.
+	bytes, err := hex.DecodeString(hexStr)
 	if err != nil {
-		return 0, fmt.Errorf("failed to parse hex string %s to uint64: %w", hexStr, err)
+		return 0, fmt.Errorf("invalid hex string: %w", err)
 	}
-	return orderID, nil
+
+	// Convert the bytes to uint64. Only the last 8 bytes are relevant for uint64.
+	var value uint64
+	for _, b := range bytes {
+		value = value<<8 + uint64(b)
+	}
+
+	return value, nil
 }
