@@ -7,5 +7,6 @@ type RewardDTO struct {
 	TransactionHash  string `json:"transaction_hash"`
 	TokenAmount      string `json:"token_amount"`
 	Status           int16  `json:"status"`
+	TxType           string `json:"tx_type"`
 	ErrorMessage     string `json:"error_message"`
 }

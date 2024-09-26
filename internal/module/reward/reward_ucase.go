@@ -94,6 +94,7 @@ func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayloadDTO) ([]
 			RecipientAddress: payload.RecipientAddress,
 			TokenAmount:      payload.TokenAmount,
 			Status:           -1, // Default to failed status initially
+			TxType:           model.RewardTxType,
 		})
 	}
 

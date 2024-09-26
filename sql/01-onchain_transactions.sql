@@ -6,7 +6,7 @@ CREATE TABLE onchain_transactions (
     token_amount NUMERIC(50, 18) NOT NULL,
     status SMALLINT NOT NULL DEFAULT 0,  -- 0 for pending, 1 for success, -1 for failed 
     error_message TEXT,
-    tx_type VARCHAR(15) NOT NULL DEFAULT 'reward' CHECK (tx_type <> ''),  -- Check constraint to ensure tx_type is not empty
+    tx_type VARCHAR(15) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
