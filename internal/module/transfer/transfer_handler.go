@@ -50,7 +50,7 @@ func (h *TransferHandler) Transfer(ctx *gin.Context) {
 		// Check if the recipient address is a valid Ethereum address
 		if !common.IsHexAddress(payload.RecipientAddress) {
 			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error":   "Invalid recipient address",
+				"error":   "Invalid recipient address: " + payload.RecipientAddress,
 				"details": "RecipientAddress must be a valid Ethereum address",
 			})
 			return
@@ -60,7 +60,7 @@ func (h *TransferHandler) Transfer(ctx *gin.Context) {
 		if payload.TxType != "PURCHASE" && payload.TxType != "COMMISSION" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error":   "Invalid tx_type",
-				"details": "TxType must be either PURCHASE or COMMISSION",
+				"details": "tx_type must be either PURCHASE or COMMISSION",
 			})
 			return
 		}

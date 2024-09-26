@@ -19,7 +19,7 @@ type MembershipEvent struct {
 }
 
 func (m *MembershipEvent) TableName() string {
-	return "membership_events"
+	return "membership_event"
 }
 
 func (m *MembershipEvent) ToDto() dto.MembershipEventDTO {
