@@ -3,9 +3,10 @@ CREATE TABLE onchain_transactions (
     reward_address VARCHAR(50) NOT NULL,
     recipient_address VARCHAR(50) NOT NULL,
     transaction_hash VARCHAR(66) NOT NULL,
-    token_amount NUMERIC(50, 18) NOT NULL, 
+    token_amount NUMERIC(50, 18) NOT NULL,
     status SMALLINT NOT NULL DEFAULT 0,  -- 0 for pending, 1 for success, -1 for failed 
-    tx_type VARCHAR(15) NOT NULL DEFAULT 'reward',  -- Use single quotes for default string value
+    error_message TEXT,
+    tx_type VARCHAR(15) NOT NULL DEFAULT 'reward' CHECK (tx_type <> ''),  -- Check constraint to ensure tx_type is not empty
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
