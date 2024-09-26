@@ -31,7 +31,7 @@ func NewMembershipHandler(ucase interfaces.MembershipUCase) *MembershipHandler {
 // @Accept json
 // @Produce json
 // @Param orderIds query string true "Comma-separated list of Order IDs"
-// @Success 200 {array} dto.MembershipEventsDTO
+// @Success 200 {array} dto.MembershipEventDTO
 // @Failure 400 {object} util.GeneralError "Invalid Order IDs"
 // @Failure 500 {object} util.GeneralError "Internal server error"
 // @Router /api/v1/membership/events [get]

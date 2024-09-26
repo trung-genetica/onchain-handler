@@ -43,7 +43,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.MembershipEventsDTO"
+                                "$ref": "#/definitions/dto.MembershipEventDTO"
                             }
                         }
                     },
@@ -62,9 +62,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/rewards": {
+        "/api/v1/transfer": {
             "post": {
-                "description": "Reward",
+                "description": "Transfer",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,19 +72,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "reward"
+                    "transfer"
                 ],
-                "summary": "Reward",
+                "summary": "Transfer",
                 "parameters": [
                     {
-                        "description": "Request reward tokens, required",
+                        "description": "Request transfer tokens, required",
                         "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.CreateRewardPayloadDTO"
+                                "$ref": "#/definitions/dto.TransferTokenPayloadDTO"
                             }
                         }
                     }
@@ -95,7 +95,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.CreateRewardPayloadDTO"
+                                "$ref": "#/definitions/dto.TransferTokenPayloadDTO"
                             }
                         }
                     },
@@ -116,18 +116,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.CreateRewardPayloadDTO": {
-            "type": "object",
-            "properties": {
-                "recipient_address": {
-                    "type": "string"
-                },
-                "token_amount": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.MembershipEventsDTO": {
+        "dto.MembershipEventDTO": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -149,6 +138,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TransferTokenPayloadDTO": {
+            "type": "object",
+            "properties": {
+                "recipient_address": {
+                    "type": "string"
+                },
+                "token_amount": {
+                    "type": "string"
+                },
+                "tx_type": {
                     "type": "string"
                 }
             }

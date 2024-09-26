@@ -12,7 +12,7 @@ import (
 	"github.com/genefriendway/onchain-handler/conf"
 	"github.com/genefriendway/onchain-handler/internal/module/blockstate"
 	"github.com/genefriendway/onchain-handler/internal/module/membership"
-	"github.com/genefriendway/onchain-handler/internal/module/reward"
+	"github.com/genefriendway/onchain-handler/internal/module/transfer"
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
@@ -21,10 +21,10 @@ func RegisterRoutes(r *gin.Engine, config *conf.Configuration, db *gorm.DB, ethC
 	appRouter := v1.Group("")
 
 	// SECTION: reward tokens
-	rewardRepository := reward.NewRewardRepository(db)
-	rewardUCase := reward.NewRewardUCase(rewardRepository, ethClient, config)
-	rewardHandler := reward.NewRewardHandler(rewardUCase)
-	appRouter.POST("/rewards", rewardHandler.Reward)
+	transferRepository := transfer.NewTransferRepository(db)
+	transferUCase := transfer.NewtTransferUCase(transferRepository, ethClient, config)
+	transferHandler := transfer.NewTransferHandler(transferUCase)
+	appRouter.POST("/transfer", transferHandler.Transfer)
 
 	// SECTION: membership purchase
 	membershipRepository := membership.NewMembershipRepository(db)

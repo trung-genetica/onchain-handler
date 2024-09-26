@@ -6,7 +6,7 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/dto"
 )
 
-type MembershipEvents struct {
+type MembershipEvent struct {
 	ID              uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserAddress     string    `json:"user_address"`
 	OrderID         uint64    `json:"order_id"`
@@ -18,12 +18,12 @@ type MembershipEvents struct {
 	EndDuration     time.Time `json:"end_duration"`
 }
 
-func (m *MembershipEvents) TableName() string {
+func (m *MembershipEvent) TableName() string {
 	return "membership_events"
 }
 
-func (m *MembershipEvents) ToDto() dto.MembershipEventsDTO {
-	return dto.MembershipEventsDTO{
+func (m *MembershipEvent) ToDto() dto.MembershipEventDTO {
+	return dto.MembershipEventDTO{
 		ID:              m.ID,
 		UserAddress:     m.UserAddress,
 		OrderID:         m.OrderID,

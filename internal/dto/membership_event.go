@@ -2,7 +2,7 @@ package dto
 
 import "time"
 
-type MembershipEventsDTO struct {
+type MembershipEventDTO struct {
 	ID              uint64    `json:"id"`
 	UserAddress     string    `json:"user_address"`
 	OrderID         uint64    `json:"order_id"`

@@ -6,9 +6,7 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/dto"
 )
 
-const RewardTxType = "REWARD"
-
-type Reward struct {
+type TransferHistory struct {
 	ID               uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
 	RewardAddress    string    `json:"reward_address"`
 	RecipientAddress string    `json:"recipient_address"`
@@ -21,12 +19,12 @@ type Reward struct {
 	UpdatedAt        time.Time `json:"updated_at"`
 }
 
-func (m *Reward) TableName() string {
+func (m *TransferHistory) TableName() string {
 	return "onchain_transactions"
 }
 
-func (m *Reward) ToDto() dto.RewardDTO {
-	return dto.RewardDTO{
+func (m *TransferHistory) ToDto() dto.TransferHistoryDTO {
+	return dto.TransferHistoryDTO{
 		ID:               m.ID,
 		RewardAddress:    m.RewardAddress,
 		RecipientAddress: m.RecipientAddress,

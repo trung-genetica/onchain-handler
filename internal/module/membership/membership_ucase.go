@@ -17,7 +17,7 @@ func NewMembershipUCase(membershipRepository interfaces.MembershipRepository) in
 	}
 }
 
-func (u *membershipUCase) GetMembershipEventByOrderID(ctx context.Context, orderID uint64) (*dto.MembershipEventsDTO, error) {
+func (u *membershipUCase) GetMembershipEventByOrderID(ctx context.Context, orderID uint64) (*dto.MembershipEventDTO, error) {
 	membershipEvent, err := u.MembershipRepository.GetMembershipEventByOrderID(ctx, orderID)
 	if err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func (u *membershipUCase) GetMembershipEventByOrderID(ctx context.Context, order
 }
 
 // GetMembershipEventsByOrderIDs retrieves a list of membership events by their order IDs.
-func (u *membershipUCase) GetMembershipEventsByOrderIDs(ctx context.Context, orderIDs []uint64) ([]dto.MembershipEventsDTO, error) {
+func (u *membershipUCase) GetMembershipEventsByOrderIDs(ctx context.Context, orderIDs []uint64) ([]dto.MembershipEventDTO, error) {
 	// Retrieve membership events from the repository using the provided order IDs.
 	membershipEvents, err := u.MembershipRepository.GetMembershipEventsByOrderIDs(ctx, orderIDs)
 	if err != nil {
@@ -43,7 +43,7 @@ func (u *membershipUCase) GetMembershipEventsByOrderIDs(ctx context.Context, ord
 	}
 
 	// Convert the retrieved membership events to DTOs.
-	var membershipEventDTOs []dto.MembershipEventsDTO
+	var membershipEventDTOs []dto.MembershipEventDTO
 	for _, event := range membershipEvents {
 		membershipEventDTO := event.ToDto() // Assuming ToDto() method converts model to DTO.
 		membershipEventDTOs = append(membershipEventDTOs, membershipEventDTO)

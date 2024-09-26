@@ -90,7 +90,7 @@ func (listener *MembershipEventListener) parseAndProcessMembershipEvent(vLog typ
 		return nil, fmt.Errorf("failed to parse order ID: %w", err)
 	}
 
-	eventModel := model.MembershipEvents{
+	eventModel := model.MembershipEvent{
 		UserAddress:     event.User.Hex(),
 		OrderID:         orderID,
 		TransactionHash: vLog.TxHash.Hex(),

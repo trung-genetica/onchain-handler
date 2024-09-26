@@ -1,4 +1,4 @@
-package reward
+package transfer
 
 import (
 	"net/http"
@@ -10,32 +10,31 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/utils/log"
 )
 
-type RewardHandler struct {
-	UCase interfaces.RewardUCase
+type TransferHandler struct {
+	UCase interfaces.TransferUCase
 }
 
 // NewRewardHandler initializes the RewardHandler
-func NewRewardHandler(ucase interfaces.RewardUCase) *RewardHandler {
-	return &RewardHandler{
+func NewTransferHandler(ucase interfaces.TransferUCase) *TransferHandler {
+	return &TransferHandler{
 		UCase: ucase,
 	}
 }
 
-// Reward handles the distribution of reward tokens
-// @Summary Reward
-// @Description Reward
-// @Tags 	reward
+// Transfer handles the distribution of tokens
+// @Summary Transfer
+// @Description Transfer
+// @Tags 	transfer
 // @Accept	json
 // @Produce json
-// @Param 	payload	body 			[]dto.CreateRewardPayloadDTO true "Request reward tokens, required"
-// @Success 200 		{object}	[]dto.CreateRewardPayloadDTO "When success, return {"success": true}"
+// @Param 	payload	body 			[]dto.TransferTokenPayloadDTO true "Request transfer tokens, required"
+// @Success 200 		{object}	[]dto.TransferTokenPayloadDTO "When success, return {"success": true}"
 // @Failure 400 		{object}	util.GeneralError "Invalid payload"
 // @Failure 500 		{object}	util.GeneralError "Internal server error"
-// @Router 	/api/v1/rewards [post]
-func (h *RewardHandler) Reward(ctx *gin.Context) {
-	var req []dto.CreateRewardPayloadDTO
+// @Router 	/api/v1/transfer [post]
+func (h *TransferHandler) Transfer(ctx *gin.Context) {
+	var req []dto.TransferTokenPayloadDTO
 
-	// Step 1: Parse and validate the request payload
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		log.LG.Errorf("%s: %v", "Invalid payload", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -45,7 +44,17 @@ func (h *RewardHandler) Reward(ctx *gin.Context) {
 		return
 	}
 
-	if err := h.UCase.DistributeRewards(ctx, req); err != nil {
+	for _, payload := range req {
+		if payload.TxType != "PURCHASE" && payload.TxType != "COMMISSION" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error":   "Invalid tx_type",
+				"details": "TxType must be either PURCHASE or COMMISSION",
+			})
+			return
+		}
+	}
+
+	if err := h.UCase.DistributeTokens(ctx, req); err != nil {
 		log.LG.Errorf("Failed to distribute rewards: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Failed to distribute rewards",

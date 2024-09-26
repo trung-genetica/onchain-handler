@@ -1,12 +1,5 @@
 definitions:
-  dto.CreateRewardPayloadDTO:
-    properties:
-      recipient_address:
-        type: string
-      token_amount:
-        type: string
-    type: object
-  dto.MembershipEventsDTO:
+  dto.MembershipEventDTO:
     properties:
       amount:
         type: string
@@ -21,6 +14,15 @@ definitions:
       transaction_hash:
         type: string
       user_address:
+        type: string
+    type: object
+  dto.TransferTokenPayloadDTO:
+    properties:
+      recipient_address:
+        type: string
+      token_amount:
+        type: string
+      tx_type:
         type: string
     type: object
   util.GeneralError:
@@ -58,7 +60,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.MembershipEventsDTO'
+              $ref: '#/definitions/dto.MembershipEventDTO'
             type: array
         "400":
           description: Invalid Order IDs
@@ -71,19 +73,19 @@ paths:
       summary: Get membership events by order IDs
       tags:
       - membership
-  /api/v1/rewards:
+  /api/v1/transfer:
     post:
       consumes:
       - application/json
-      description: Reward
+      description: Transfer
       parameters:
-      - description: Request reward tokens, required
+      - description: Request transfer tokens, required
         in: body
         name: payload
         required: true
         schema:
           items:
-            $ref: '#/definitions/dto.CreateRewardPayloadDTO'
+            $ref: '#/definitions/dto.TransferTokenPayloadDTO'
           type: array
       produces:
       - application/json
@@ -92,7 +94,7 @@ paths:
           description: 'When success, return {"success": true}'
           schema:
             items:
-              $ref: '#/definitions/dto.CreateRewardPayloadDTO'
+              $ref: '#/definitions/dto.TransferTokenPayloadDTO'
             type: array
         "400":
           description: Invalid payload
@@ -102,7 +104,7 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/util.GeneralError'
-      summary: Reward
+      summary: Transfer
       tags:
-      - reward
+      - transfer
 swagger: "2.0"

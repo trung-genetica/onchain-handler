@@ -1,4 +1,4 @@
-package reward
+package transfer
 
 import (
 	"context"
@@ -15,23 +15,22 @@ import (
 	"github.com/genefriendway/onchain-handler/internal/model"
 )
 
-type rewardUCase struct {
-	RewardRepository interfaces.RewardRepository
-	ETHClient        *ethclient.Client
-	Config           *conf.Configuration
+type transferUCase struct {
+	TrasferRepository interfaces.TransferRepository
+	ETHClient         *ethclient.Client
+	Config            *conf.Configuration
 }
 
-// NewRewardUCase initializes the reward use case
-func NewRewardUCase(rewardRepository interfaces.RewardRepository, ethClient *ethclient.Client, config *conf.Configuration) interfaces.RewardUCase {
-	return &rewardUCase{
-		RewardRepository: rewardRepository,
-		ETHClient:        ethClient,
-		Config:           config,
+func NewtTransferUCase(transferRepository interfaces.TransferRepository, ethClient *ethclient.Client, config *conf.Configuration) interfaces.TransferUCase {
+	return &transferUCase{
+		TrasferRepository: transferRepository,
+		ETHClient:         ethClient,
+		Config:            config,
 	}
 }
 
-// DistributeRewards handles the entire process of reward distribution
-func (u *rewardUCase) DistributeRewards(ctx context.Context, payloads []dto.CreateRewardPayloadDTO) error {
+// DistributeTokens handles the entire process of tokens distribution
+func (u *transferUCase) DistributeTokens(ctx context.Context, payloads []dto.TransferTokenPayloadDTO) error {
 	// Convert the payload into recipients
 	recipients, err := u.convertToRecipients(payloads)
 	if err != nil {
@@ -54,7 +53,7 @@ func (u *rewardUCase) DistributeRewards(ctx context.Context, payloads []dto.Crea
 }
 
 // convertToRecipients converts the payload into recipients (address -> token amount in smallest unit)
-func (u *rewardUCase) convertToRecipients(req []dto.CreateRewardPayloadDTO) (map[string]*big.Int, error) {
+func (u *transferUCase) convertToRecipients(req []dto.TransferTokenPayloadDTO) (map[string]*big.Int, error) {
 	recipients := make(map[string]*big.Int)
 
 	for _, payload := range req {
@@ -78,8 +77,8 @@ func (u *rewardUCase) convertToRecipients(req []dto.CreateRewardPayloadDTO) (map
 }
 
 // prepareRewardHistory prepares reward history based on the payload
-func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayloadDTO) ([]model.Reward, error) {
-	var rewards []model.Reward
+func (u *transferUCase) prepareRewardHistory(req []dto.TransferTokenPayloadDTO) ([]model.TransferHistory, error) {
+	var rewards []model.TransferHistory
 
 	for _, payload := range req {
 		// Validate token amount
@@ -89,12 +88,12 @@ func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayloadDTO) ([]
 		}
 
 		// Prepare reward entry
-		rewards = append(rewards, model.Reward{
+		rewards = append(rewards, model.TransferHistory{
 			RewardAddress:    u.Config.Blockchain.RewardAddress,
 			RecipientAddress: payload.RecipientAddress,
 			TokenAmount:      payload.TokenAmount,
 			Status:           -1, // Default to failed status initially
-			TxType:           model.RewardTxType,
+			TxType:           payload.TxType,
 		})
 	}
 
@@ -102,7 +101,7 @@ func (u *rewardUCase) prepareRewardHistory(req []dto.CreateRewardPayloadDTO) ([]
 }
 
 // distributeAndSaveRewards distributes rewards and updates reward history
-func (u *rewardUCase) distributeAndSaveRewards(ctx context.Context, rewards []model.Reward, recipients map[string]*big.Int) error {
+func (u *transferUCase) distributeAndSaveRewards(ctx context.Context, rewards []model.TransferHistory, recipients map[string]*big.Int) error {
 	txHash, err := blockchain.DistributeReward(u.ETHClient, u.Config, recipients)
 	for index := range rewards {
 		if err != nil {
@@ -115,7 +114,7 @@ func (u *rewardUCase) distributeAndSaveRewards(ctx context.Context, rewards []mo
 	}
 
 	// Save reward history
-	err = u.RewardRepository.CreateRewardsHistory(ctx, rewards)
+	err = u.TrasferRepository.CreateTransferHistories(ctx, rewards)
 	if err != nil {
 		return fmt.Errorf("failed to save rewards history: %v", err)
 	}
