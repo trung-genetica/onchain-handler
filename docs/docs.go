@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/api/v1/membership/events": {
             "get": {
-                "description": "Get a list of membership events based on provided order IDs",
+                "description": "This endpoint fetches a list of membership events based on the provided comma-separated list of order IDs.",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,11 +27,11 @@ const docTemplate = `{
                 "tags": [
                     "membership"
                 ],
-                "summary": "Get membership events by order IDs",
+                "summary": "Retrieve membership events by order IDs",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Comma-separated list of Order IDs",
+                        "description": "Comma-separated list of order IDs",
                         "name": "orderIds",
                         "in": "query",
                         "required": true
@@ -39,7 +39,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful retrieval of membership events",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -48,7 +48,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Invalid Order IDs",
+                        "description": "Invalid Order IDs or missing Order IDs",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
@@ -64,7 +64,7 @@ const docTemplate = `{
         },
         "/api/v1/transfer": {
             "post": {
-                "description": "Transfer",
+                "description": "This endpoint allows the distribution of tokens to multiple recipients. It accepts a list of transfer requests, validates the payload, and processes the token transfers based on the transaction type.",
                 "consumes": [
                     "application/json"
                 ],
@@ -74,10 +74,10 @@ const docTemplate = `{
                 "tags": [
                     "transfer"
                 ],
-                "summary": "Transfer",
+                "summary": "Distribute tokens to recipients",
                 "parameters": [
                     {
-                        "description": "Request transfer tokens, required",
+                        "description": "List of transfer requests. Each request must include recipient address and transaction type.",
                         "name": "payload",
                         "in": "body",
                         "required": true,
@@ -91,22 +91,22 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "When success, return {\"success\": true}",
+                        "description": "Success response: {\\\"success\\\": true}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.TransferTokenPayloadDTO"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
                             }
                         }
                     },
                     "400": {
-                        "description": "Invalid payload",
+                        "description": "Invalid payload or invalid recipient address/transaction type",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal server error, failed to distribute tokens",
                         "schema": {
                             "$ref": "#/definitions/util.GeneralError"
                         }

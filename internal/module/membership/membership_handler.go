@@ -25,14 +25,14 @@ func NewMembershipHandler(ucase interfaces.MembershipUCase) *MembershipHandler {
 }
 
 // GetMembershipEventsByOrderIDs retrieves membership events by a list of order IDs.
-// @Summary Get membership events by order IDs
-// @Description Get a list of membership events based on provided order IDs
+// @Summary Retrieve membership events by order IDs
+// @Description This endpoint fetches a list of membership events based on the provided comma-separated list of order IDs.
 // @Tags membership
 // @Accept json
 // @Produce json
-// @Param orderIds query string true "Comma-separated list of Order IDs"
-// @Success 200 {array} dto.MembershipEventDTO
-// @Failure 400 {object} util.GeneralError "Invalid Order IDs"
+// @Param orderIds query string true "Comma-separated list of order IDs"
+// @Success 200 {array} dto.MembershipEventDTO "Successful retrieval of membership events"
+// @Failure 400 {object} util.GeneralError "Invalid Order IDs or missing Order IDs"
 // @Failure 500 {object} util.GeneralError "Internal server error"
 // @Router /api/v1/membership/events [get]
 func (h *MembershipHandler) GetMembershipEventsByOrderIDs(ctx *gin.Context) {
